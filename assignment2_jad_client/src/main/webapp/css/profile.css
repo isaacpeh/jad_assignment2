@@ -1,0 +1,22 @@
+@charset "ISO-8859-1";
+.customerWelcome {
+  background-color: #0093e9;
+  background-image: linear-gradient(160deg, #0093e9 0%, #80d0c7 100%);
+}
+
+.profile_pic img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.profile_pic {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.customerDetails {
+    display: flex; justify-content: center; align-items: center
+}
