@@ -102,7 +102,198 @@ public class TourManager {
 		}
 		return result;
 	}
+	
+	// SHOW TOUR BY POPULARITY (TOURRECORDS)
+	public ArrayList<Tour> showToursPopularity() {
+			Connection con = DatabaseConfig.getConn();
+			String sql = "SELECT DISTINCT "
+							+ "T.tourid, " 
+							+ "T.tourname, " 
+							+ "T.brief_description, " 
+							+ "T.detailed_description, " 
+							+ "T.price, "
+							+ "T.slots_available, "
+							+ "sum(O.quantity) AS sales " 
+						+ "FROM " 
+							+ "tour AS T , " 
+							+ "order_history AS O " 
+						+ "WHERE "
+							+ "T.tourid = O.tourid "
+						+ "GROUP BY "
+							+ "T.tourid"
+						+ "ORDER BY " 
+							+ "sales DESC";
 
+			Statement stmt = null;
+			ResultSet rs = null; 
+			ArrayList<Tour> result = new ArrayList<Tour>();
+			
+			try {
+				stmt = con.createStatement();
+				rs = stmt.executeQuery(sql);
+
+				while (rs.next()) {
+					Tour tempTour = new Tour();
+					tempTour.setTourid(rs.getInt("tourid"));
+					tempTour.setTourName(rs.getString("tourname"));
+					tempTour.setbDescription(rs.getString("brief_description"));
+					tempTour.setdDescription(rs.getString("detailed_description"));
+					tempTour.setPrice(rs.getDouble("price"));
+					tempTour.setSlotsAvailable(rs.getInt("slots_available"));
+					tempTour.setTotalSales(rs.getInt("sales"));
+					result.add(tempTour);
+				}
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+
+			} finally {
+			    try { if (rs != null) rs.close(); } catch (Exception e) {};
+			    try { if (stmt != null) stmt.close(); } catch (Exception e) {};
+			    try { if (con != null) con.close(); } catch (Exception e) {};
+			}
+			return result;
+		}
+		
+	// SHOW TOUR BY 0 SALES
+	public ArrayList<Tour> showToursNoSales() {
+			Connection con = DatabaseConfig.getConn();
+			String sql = "SELECT DISTINCT "
+							+ "T.tourid, "
+							+ "T.tourname, "
+							+ "T.brief_description, "
+							+ "T.detailed_description, "
+							+ "T.price, "
+							+ "T.slots_available "
+						+ "FROM "
+							+ "tour AS T "
+						+ "LEFT JOIN "
+							+ "order_history AS O "
+						+ "ON"
+							+ "T.tourid = O.tourid "
+						+ "WHERE " 
+							+ "O.tourid IS NULL";
+
+			Statement stmt = null;
+			ResultSet rs = null; 
+			ArrayList<Tour> result = new ArrayList<Tour>();
+			
+			try {
+				stmt = con.createStatement();
+				rs = stmt.executeQuery(sql);
+
+				while (rs.next()) {
+					Tour tempTour = new Tour();
+					tempTour.setTourid(rs.getInt("tourid"));
+					tempTour.setTourName(rs.getString("tourname"));
+					tempTour.setbDescription(rs.getString("brief_description"));
+					tempTour.setdDescription(rs.getString("detailed_description"));
+					tempTour.setPrice(rs.getDouble("price"));
+					tempTour.setSlotsAvailable(rs.getInt("slots_available"));
+					result.add(tempTour);
+				}
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+
+			} finally {
+			    try { if (rs != null) rs.close(); } catch (Exception e) {};
+			    try { if (stmt != null) stmt.close(); } catch (Exception e) {};
+			    try { if (con != null) con.close(); } catch (Exception e) {};
+			}
+			return result;
+		}
+	
+	// SHOW TOUR BY SLOT
+	public ArrayList<Tour> showToursSlot(int threshold) {
+				Connection con = DatabaseConfig.getConn();
+				String sql = "SELECT DISTINCT "
+								+ "T.tourid, " 
+								+ "T.tourname, " 
+								+ "T.brief_description, " 
+								+ "T.detailed_description, " 
+								+ "T.price, "
+								+ "T.slots_available "
+							+ "FROM " 
+								+ "tour AS T " 
+							+ "WHERE "
+								+ "T.slots_available <= ?"
+							+ "ORDER BY " 
+								+ "T.slots_available ASC";
+
+				ResultSet rs = null; 
+				PreparedStatement ps = null;
+				ArrayList<Tour> result = new ArrayList<Tour>();
+				
+				try {
+					ps = con.prepareStatement(sql);
+					ps.setInt(1, threshold);
+					rs = ps.executeQuery();
+
+					while (rs.next()) {
+						Tour tempTour = new Tour();
+						tempTour.setTourid(rs.getInt("tourid"));
+						tempTour.setTourName(rs.getString("tourname"));
+						tempTour.setbDescription(rs.getString("brief_description"));
+						tempTour.setdDescription(rs.getString("detailed_description"));
+						tempTour.setPrice(rs.getDouble("price"));
+						tempTour.setSlotsAvailable(rs.getInt("slots_available"));
+						result.add(tempTour);
+					}
+				} catch (SQLException ex) {
+					ex.printStackTrace();
+
+				} finally {
+				    try { if (rs != null) rs.close(); } catch (Exception e) {};
+				    try { if (ps != null) ps.close(); } catch (Exception e) {};
+				    try { if (con != null) con.close(); } catch (Exception e) {};
+				}
+				return result;
+			}
+	
+	// SHOW TOUR BY CREATION (NEWEST)
+	public ArrayList<Tour> showToursNew() {
+		Connection con = DatabaseConfig.getConn();
+		String sql = "SELECT DISTINCT "
+						+ "T.tourid, " 
+						+ "T.tourname, " 
+						+ "T.brief_description, " 
+						+ "T.detailed_description, " 
+						+ "T.price, "
+						+ "T.slots_available, "
+						+ "T.created_at"
+					+ "FROM " 
+						+ "tour AS T " 
+					+ "ORDER BY " 
+						+ "created_at DESC";
+	
+		ResultSet rs = null; 
+		Statement stmt = null;
+		ArrayList<Tour> result = new ArrayList<Tour>();
+		
+		try {
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(sql);
+	
+			while (rs.next()) {
+				Tour tempTour = new Tour();
+				tempTour.setTourid(rs.getInt("tourid"));
+				tempTour.setTourName(rs.getString("tourname"));
+				tempTour.setbDescription(rs.getString("brief_description"));
+				tempTour.setdDescription(rs.getString("detailed_description"));
+				tempTour.setPrice(rs.getDouble("price"));
+				tempTour.setSlotsAvailable(rs.getInt("slots_available"));
+				result.add(tempTour);
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+	
+		} finally {
+		    try { if (rs != null) rs.close(); } catch (Exception e) {};
+		    try { if (stmt != null) stmt.close(); } catch (Exception e) {};
+		    try { if (con != null) con.close(); } catch (Exception e) {};
+		}
+		return result;
+	}
+		
 	// SHOW TOUR BY CATEGORY ONLY
 	public List<Tour> showToursCategory(int catid) {
 		Connection con = DatabaseConfig.getConn();
@@ -190,7 +381,7 @@ public class TourManager {
 		return result;
 	}
 	
-	// Show one tour
+	// SHOW ONE TOUR
 	public Tour showTour(int tourid) {
 		Connection con = DatabaseConfig.getConn();
 		String sql = "SELECT "

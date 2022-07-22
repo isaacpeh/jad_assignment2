@@ -55,6 +55,8 @@ public class TourSearchController extends HttpServlet {
 		TourManager tm = new TourManager();
 		int catid = 0;
 		String filter = null;
+		String adminFilter = null;
+		int adminFilterSlot = -1;
 		List<Tour> result;
 
 		/* --------------------------------------------
@@ -63,6 +65,8 @@ public class TourSearchController extends HttpServlet {
 		try {
 			catid = Integer.parseInt(request.getParameter("catid"));
 			filter = request.getParameter("key").trim();
+			adminFilter = request.getParameter("adminfilter").trim();
+			adminFilterSlot = Integer.parseInt(request.getParameter("adminfilterslot").trim());
 			result = new ArrayList<>();
 
 		} catch (Exception ex) {
@@ -72,7 +76,23 @@ public class TourSearchController extends HttpServlet {
 		/* --------------------------------------------
 		 * 3. Process request
 		 * -------------------------------------------- */
-		if (catid != 0 && (filter != null && filter != "")) {
+		if (adminFilterSlot != -1 && source.equalsIgnoreCase("admin_category")) {
+			// Slot
+			result = tm.showToursSlot(adminFilterSlot);
+			
+		} else if (adminFilter.equalsIgnoreCase("popularity") && source.equalsIgnoreCase("admin_category")) {
+			// Popularity
+			result = tm.showToursPopularity();
+
+		} else if (adminFilter.equalsIgnoreCase("zerosales") && source.equalsIgnoreCase("admin_category")) {
+			// Zero Sales
+			result = tm.showToursNoSales();
+
+		} else if (adminFilter.equalsIgnoreCase("create") && source.equalsIgnoreCase("admin_category")) {
+			// Creation date
+			result = tm.showToursNoSales();
+
+		} else if (catid != 0 && (filter != null && filter != "")) {
 			// Category and Filter
 			result = tm.showToursBoth(catid, filter);
 
