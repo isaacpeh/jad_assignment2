@@ -70,7 +70,7 @@ public class TourSearchController extends HttpServlet {
 			result = new ArrayList<>();
 
 		} catch (Exception ex) {
-			// some error
+			// input error here
 		}
 		
 		/* --------------------------------------------
