@@ -90,7 +90,7 @@ public class TourSearchController extends HttpServlet {
 
 		} else if (adminFilter.equalsIgnoreCase("create") && source.equalsIgnoreCase("admin_category")) {
 			// Creation date
-			result = tm.showToursNoSales();
+			result = tm.showToursNew();
 
 		} else if (catid != 0 && (filter != null && filter != "")) {
 			// Category and Filter
