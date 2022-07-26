@@ -90,7 +90,7 @@
 	<div class="row">
 		<div class="col-2"></div>
 		<div class="col-8">
-			<h3> your Tour 🛫</h3>
+			<h3>Search your Tour 🛫</h3>
 		</div>
 		<div class="col-2"></div>
 	</div>
