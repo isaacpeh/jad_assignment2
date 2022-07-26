@@ -13,6 +13,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
+
 </head>
 <body>
 	<%@ page import="model.Tour, model.Category,java.util.*"%>
@@ -265,10 +267,31 @@
 					<%
 					}
 					%>
-
-					Image URL: <br> <input type="text" name="new_tourImg">
-					<br> <input type="text" name="new_tourImg"> <br>
-					<input type="text" name="new_tourImg"> <br>
+					
+					Image URL: <a class="btn ml-24" onclick="add()">add more image</a>
+					<div id="new_input_field">
+						<br> <input type="text" class="inputField" name="new_tourImg" id="1">
+					</div>
+					<div id="container">
+						<p id="alertMsg" style="color:red"></p>
+					</div>
+					<script>
+					function add(){
+						  const element = document.getElementById("new_input_field");
+						  
+						  var currentInput = element.lastElementChild.id;
+						  if(document.getElementById(""+currentInput).value.length == 0){
+							  document.getElementById('alertMsg').innerHTML="Please fill in the blank!";
+						  }	
+						  else{
+						  currentInput++
+						  document.getElementById('alertMsg').innerHTML="";
+					      var new_input="<br> <input type='text' name='new_tourImg' id='"+currentInput+"'>";
+					      $('#new_input_field').append(new_input);
+					      currentInput++
+					      }
+					    }
+					</script>
 				
 			</div>
 			<div class="modal-footer u-text-right">
