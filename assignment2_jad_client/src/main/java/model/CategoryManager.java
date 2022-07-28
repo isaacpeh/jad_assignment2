@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import controller.DatabaseConfig;
-
 public class CategoryManager {
 
 	// SHOW ALL
