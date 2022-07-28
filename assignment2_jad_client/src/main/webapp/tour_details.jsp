@@ -27,11 +27,13 @@
 	
 	<%
 	Tour tour = (Tour) request.getAttribute("reqTour");
-	String tourname = "", tourdSummary = "", tourbSummary = "";
+	String tourname = "", tourdSummary = "", tourbSummary = "",tourid="";
+	
 	double tourPrice = 0;
 	int slotsAvailable = 0;
 
 	try {
+		tourid = Integer.toString(tour.getTourid());
 		tourname = tour.getTourName();
 		tourdSummary = tour.getdDescription();
 		tourbSummary = tour.getdDescription();
@@ -92,7 +94,15 @@
 				<div class="enrollment">
 					<p>If all is good and wish to enroll, you can do so by clicking
 						the button below!</p>
-					<button class="bg-info text-white u-center">Enroll</button>
+					<div class="row">
+						<button class="bg-info text-white u-center col-6">Enroll</button>
+						<a href="" class="col-6">
+							<button class="bg-link text-white u-center">
+								Add to Cart
+							</button>
+						</a>
+					</div>
+					
 				</div>
 			</div>
 		</div>
