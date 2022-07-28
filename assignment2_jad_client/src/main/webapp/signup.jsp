@@ -30,7 +30,7 @@
 				<p>Excited to book your next trip? Make sure to not miss out on
 					our discounts for the month of June! Definitely don't want to miss
 					it!</p>
-				<form action="/assignment1_jad/UserAddController" method="post">
+				<form action="/assignment2_jad_client/UserAddController" method="post">
 					<h6 class="m-0">Username</h6>
 					<div class="row level">
 						<input type="text" name="new_loginid"

@@ -3,14 +3,14 @@ package model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 
 import controller.DatabaseConfig;
 
 public class TourRecordManager {
 	
 	//INSERT RECORD
-	public int[] addRecord(ArrayList<TourRecord> tourRecord) {
+	public int[] addRecord(List<TourRecord> tourRecord) {
 		Connection con = DatabaseConfig.getConn();
 		String sql = "INSERT INTO "
 						+ "order_history (userid, tourid, quantity) "
@@ -42,4 +42,5 @@ public class TourRecordManager {
 		    try { if (con != null) con.close(); } catch (Exception e) {};
 		}
 	}
+
 }

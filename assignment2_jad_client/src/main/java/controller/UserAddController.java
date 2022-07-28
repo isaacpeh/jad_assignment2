@@ -52,6 +52,7 @@ public class UserAddController extends HttpServlet {
 		String rePassword = request.getParameter("retyped_password");
 		String email = request.getParameter("new_email");
 		String contact = request.getParameter("new_contact");
+		String address = request.getParameter("new_address");
 
 		try {
 			int contactInt = Integer.parseInt(contact);
@@ -68,7 +69,8 @@ public class UserAddController extends HttpServlet {
 		}
 
 		if (loginid == null || loginid.trim().equals("") || password == null || password.trim().equals("")
-				|| email == null || email.trim().equals("") || contact == null || contact.trim().equals("")) {
+				|| email == null || email.trim().equals("") || contact == null || contact.trim().equals("")
+				|| address == null || address.trim().equals("")) {
 			response.sendRedirect("signup.jsp?errCode=failedRegistration");
 			return;
 		}
@@ -81,7 +83,7 @@ public class UserAddController extends HttpServlet {
 		/* --------------------------------------------
 		 * 3. Process request
 		 * -------------------------------------------- */
-		User new_user = new User(loginid, email, contact, password, role);
+		User new_user = new User(loginid, email, contact, password, role, address);
 		int result = um.addUser(new_user);
 
 		if (result == 1) {

@@ -25,14 +25,14 @@ import model.TourManager;
 /**
  * Servlet implementation class TourShowBothController
  */
-@WebServlet(urlPatterns = { "/tours", "/admin_tours" })
-public class TourSearchController extends HttpServlet {
+@WebServlet(urlPatterns = { "/admin_tours_filter" })
+public class TourAdminSearchController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public TourSearchController() {
+	public TourAdminSearchController() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -43,31 +43,27 @@ public class TourSearchController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		// String source = "tours.jsp";
-		String source = "test.jsp";
-		if (request.getRequestURI().contains("admin_tours")) {
-			source = "admin_category";
-		}
 
 		/* --------------------------------------------
 		 * 1. Pull data
 		 * -------------------------------------------- */
 		TourManager tm = new TourManager();
-		int catid = 0;
-		String filter = null;
-		List<Tour> result;
-
+		String adminFilter = null;
+		int adminFilter_slot = -1;
+		List<Tour> result = new ArrayList<Tour>();
 		/* --------------------------------------------
 		 * 2. Validate data
 		 * -------------------------------------------- */
 
 
 		try {
-			result = new ArrayList<>();
-			filter = request.getParameter("key").trim();
-			catid = Integer.parseInt(request.getParameter("catid"));
+			adminFilter = request.getParameter("adminfilter");
+		} catch (Exception ex) {
+			// input error here
+		}
 
+		try {
+			adminFilter_slot = Integer.parseInt(request.getParameter("adminfilterslot").trim());
 		} catch (Exception ex) {
 			// input error here
 		}
@@ -76,17 +72,22 @@ public class TourSearchController extends HttpServlet {
 		 * 3. Process request
 		 * -------------------------------------------- */
 
-		if (catid != 0 && (filter != null && filter != "")) {
-			// Category and Filter
-			result = tm.showToursBoth(catid, filter);
+		// && source.equalsIgnoreCase("admin_category")
+		if (adminFilter_slot != -1) {
+			// Slot
+			result = tm.showToursSlot(adminFilter_slot);
+			
+		} else if (adminFilter != null && adminFilter.equalsIgnoreCase("popularity")) {
+			// Popularity
+			result = tm.showToursPopularity();
 
-		} else if (catid == 0 && (filter != null && filter != "")) {
-			// Filter only
-			result = tm.showToursFilter(filter);
+		} else if (adminFilter != null && adminFilter.equalsIgnoreCase("zerosales")) {
+			// Zero Sales
+			result = tm.showToursNoSales();
 
-		} else if (catid != 0 && (filter == null || filter == "")) {
-			// Category only
-			result = tm.showToursCategory(catid);
+		} else if (adminFilter != null && adminFilter.equalsIgnoreCase("create")) {
+			// Creation date
+			result = tm.showToursNew();
 
 		} else {
 			// Show all
@@ -94,7 +95,7 @@ public class TourSearchController extends HttpServlet {
 		}
 
 		request.setAttribute("reqTours", result);
-		RequestDispatcher dispatcher = request.getRequestDispatcher(source);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("test.jsp");
 		dispatcher.forward(request, response);
 	}
 }

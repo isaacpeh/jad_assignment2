@@ -55,6 +55,7 @@ public class UserUpdateController extends HttpServlet {
 		String email = request.getParameter("update_email");
 		String contact = request.getParameter("update_contact");
 		String pic = request.getParameter("current_pic");
+		String address = request.getParameter("current_address");
 		String role = " ";
 
 		int loggedInUser = 0;
@@ -79,7 +80,8 @@ public class UserUpdateController extends HttpServlet {
 		 * 2. Validate data
 		 * -------------------------------------------- */
 		if (loginid == null || loginid.trim().equals("") || password == null || password.trim().equals("")
-				|| email == null || email.trim().equals("") || contact == null || contact.trim().equals("")) {
+				|| email == null || email.trim().equals("") || contact == null || contact.trim().equals("")
+				|| address == null || address.trim().equals("")) {
 			response.sendRedirect("profile?errCode=failedUpdate");
 			return;
 		}
@@ -131,7 +133,7 @@ public class UserUpdateController extends HttpServlet {
 		/* --------------------------------------------
 		 * 3. Process request
 		 * -------------------------------------------- */
-		User update_user = new User(loginid, email, contact, password, role);
+		User update_user = new User(loginid, email, contact, password, role, address);
 		update_user.setPicUrl(imageFileName);
 		int result = um.updateUser(loggedInUser, update_user);
 

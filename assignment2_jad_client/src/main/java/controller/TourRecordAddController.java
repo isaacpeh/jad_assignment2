@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -49,8 +50,8 @@ public class TourRecordAddController extends HttpServlet {
 		// cart.add(new Cart(4, 1));
 		// SIMULATION END
 
-		ArrayList<Cart> cart = (ArrayList<Cart>) request.getSession().getAttribute("shoppingCart");
-		ArrayList<TourRecord> list = new ArrayList<TourRecord>();
+		List<Cart> cart = (ArrayList<Cart>) request.getSession().getAttribute("shoppingCart");
+		List<TourRecord> list = new ArrayList<TourRecord>();
 		TourRecordManager trm = new TourRecordManager();
 
 		int tourID = 0;

@@ -16,17 +16,21 @@ public class User {
 	private String role;
 	private String picUrl;
 	private int userid;
+	private String address;
+	private int purchases;
+
 
 	public User() {
 
 	}
 
-	public User(String username, String email, String contact, String password, String role) {
+	public User(String username, String email, String contact, String password, String role, String address) {
 		this.username = username;
 		this.email = email;
 		this.contact = contact;
 		this.password = password;
 		this.role = role;
+		this.address = address;
 	}
 
 	public String getUsername() {
@@ -85,4 +89,19 @@ public class User {
 		this.userid = userid;
 	}
 
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public int getPurchases() {
+		return purchases;
+	}
+
+	public void setPurchases(int purchases) {
+		this.purchases = purchases;
+	}
 }

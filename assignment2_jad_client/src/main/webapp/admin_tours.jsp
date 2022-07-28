@@ -106,7 +106,7 @@
 											<button class="btn--sm">Cancel</button>
 										</a> 
 										<a class="u-inline-block">
-											<form action="/assignment1_jad/TourDeleteController" method="post">
+											<form action="/assignment2_jad_client/TourDeleteController" method="post">
 												<button class="btn--sm btn-danger" type="submit" name="delete_tour" value=<%=i.getTourid() %>>Delete</button>
 											</form>
 										</a>
@@ -130,7 +130,7 @@
 								<div class="modal-title">Update Tour</div>
 							</div>
 							<div class="modal-body">
-								<form action="/assignment1_jad/TourUpdateController" method="post">
+								<form action="/assignment2_jad_client/TourUpdateController" method="post">
 									Tour Name: <input type="text" name="update_tourName" value="<%=i.getTourName() %>"> <br>
 									Brief Description: <input type="text" name="update_tourBDescription" value="<%=i.getbDescription() %>">
 									<br> Detailed Description: <input type="text"
@@ -227,7 +227,7 @@
 				<div class="modal-title">Add Tour</div>
 			</div>
 			<div class="modal-body">
-				<form action="/assignment1_jad/TourAddController" method="post">
+				<form action="/assignment2_jad_client/TourAddController" method="post">
 					Tour Name: <input type="text" name="new_tourName"> <br>
 					Brief Description: <input type="text" name="new_tourBDescription">
 					<br> Detailed Description: <input type="text"
@@ -296,7 +296,7 @@
 				<div class="modal-title">Add category</div>
 			</div>
 			<div class="modal-body">
-				<form action="/assignment1_jad/CategoryAddController" method="post">
+				<form action="/assignment2_jad_client/CategoryAddController" method="post">
 					Category Name: <input type="text" name="new_category"> <br>
 					Description: <input type="text" name="new_description">
 				
@@ -326,7 +326,7 @@
 				<div class="modal-title">Delete Category</div>
 			</div>
 			<div class="modal-body">
-				<form action="/assignment1_jad/CategoryDeleteController" method="post">
+				<form action="/assignment2_jad_client/CategoryDeleteController" method="post">
 				<%for(Category i : displayCategory){
 					%>	
 					 <input type="radio" name="delete_category" value="<%=i.getCatID() %>"><%=i.getCategoryName() %><br>

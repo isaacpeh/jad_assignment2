@@ -28,6 +28,7 @@ import model.UserManager;
  * Servlet Filter implementation class AdminAuthentication
  */
 @WebFilter(urlPatterns = {
+		// "/admin_tours_filter",
 		"/admin_user", 
 		"/admin_user.jsp",
 		"/admin_tours", 
