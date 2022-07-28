@@ -108,7 +108,7 @@
 										<a href="#components" class="u-inline-block">
 											<button class="btn--sm">Cancel</button>
 										</a> <a class="u-inline-block">
-											<form action="/assignment1_jad/UserDeleteController" method="post">
+											<form action="/assignment2_jad_client/UserDeleteController" method="post">
 												<button class="btn--sm btn-danger" type="submit" name="delete_user" value=<%=uid %>>Delete</button>
 											</form>
 										</a>

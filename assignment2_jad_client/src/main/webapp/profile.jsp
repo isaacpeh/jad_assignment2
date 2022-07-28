@@ -59,7 +59,7 @@
 				<div class="profile_pic">
 					<img src="./images/user_profile_pics/<%=img %>" alt="">
 				</div>
-				<form action="/assignment1_jad/UserUpdateController" method="post"
+				<form action="/assignment2_jad_client/UserUpdateController" method="post"
 					enctype="multipart/form-data">
 					<h6 class="m-0">Username</h6>
 					<div class="row level">

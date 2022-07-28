@@ -99,7 +99,7 @@
 	<div class="row">
 		<div class="col-2"></div>
 		<div class="col-8">
-			<form action="/assignment1_jad/tours" method="get">
+			<form action="/assignment2_jad_client/tours" method="get">
 				<div class="form-group">
 						<input class="form-group-input input--lg" style="width: 250%" type="text" id="search" name="key"> 
 						<select id="category" name="catid" class="form-group-input input--lg" placeholder="Choose one">

@@ -19,6 +19,7 @@ public class Tour {
 	private List<String> picUrl;
 	private int tourid;
 	private List<Integer> categoryid;
+	private int totalSales;
 
 	public Tour() {
 
@@ -94,4 +95,11 @@ public class Tour {
 		this.categoryid = categoryid;
 	}
 
+	public int getTotalSales() {
+		return totalSales;
+	}
+
+	public void setTotalSales(int totalSales) {
+		this.totalSales = totalSales;
+	}
 }

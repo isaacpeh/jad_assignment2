@@ -33,7 +33,7 @@
 					our discounts for the month of June! Definitely don't want to miss
 					it!</p>
 					
-				<form action="/assignment1_jad/VerifyUserController" method="get">
+				<form action="/assignment2_jad_client/VerifyUserController" method="get">
 					<h6 class="m-0">Username</h6>
 					<div class="row level">
 						<input type="name" name="loginid" required/>
