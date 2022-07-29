@@ -16,13 +16,14 @@
 <body class='p-2'>
 	<%@ page import="model.Tour, java.util.*, model.TourManager,model.Cart"%>
 	<%@ include file="header.jsp"%>
-	<%%>
+	
 	<div class="space space--xl ..."></div>
 	<h1 style='text-align: center;'></h1>
 	<div class='shoppingCart card row p-2 h-90p'>
 		<div class='cartItems col-9'>
 			<h2>Shopping Cart</h2>
 			<div class='u-overflow-y-scroll'>
+			
 				<%
 				List<Cart> sessCart = new ArrayList<>();
 				Cart cartItem1 = new Cart();
@@ -30,6 +31,7 @@
 				cartItem1.setPrice(22.5);
 				cartItem1.setPicUrl("https://res.klook.com/images/fl_lossy.progressive,q_65/c_fill,w_1295,h_863/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/vj3hgjkxyxcaegbbs86b/RiverCruisebyWaterB.jpg");
 				cartItem1.setQuantity(4);
+				cartItem1.setTourId(1);
 				sessCart.add(cartItem1);
 				
 				Cart cartItem2 = new Cart();
@@ -37,16 +39,23 @@
 				cartItem2.setPrice(70.0);
 				cartItem2.setPicUrl("https://www.marinabaysands.com/content/dam/singapore/marinabaysands/master/main/home/sg-visitors-guide/southern-islands/Sentosa%201000x557px.jpg");
 				cartItem2.setQuantity(2);
+				cartItem2.setTourId(2);
 				sessCart.add(cartItem2);
 				
+				double subtotal=0, gst=0, checkoutPrice =0;
 				
 				for(int i=0;i<sessCart.size();i++){
-					String tourname = "", tourPic = "", tourPrice = "",tourQuantity = "";
+					String tourname = "", tourPic = "", tourPrice = "",tourQuantity = "",tourId="",totalPrice="";
 					try{
 						tourname = sessCart.get(i).getTourName();
 						tourPic = sessCart.get(i).getPicUrl();
 						tourPrice = Double.toString(sessCart.get(i).getPrice());
 						tourQuantity = Integer.toString(sessCart.get(i).getQuantity());
+						tourId = Integer.toString(sessCart.get(i).getTourId());
+						totalPrice = Double.toString(sessCart.get(i).getTotalPrice());
+						subtotal += Double.parseDouble(totalPrice);
+						gst += (subtotal*0.07);
+						checkoutPrice = subtotal+gst;
 					}
 					catch(Exception e){
 						response.sendRedirect("tours.jsp?errCode=cartErr");
@@ -60,42 +69,41 @@
 					<div class='ml-2' style="width:100%">
 						<div class='namePrice'>
 							<h5><%=tourname %></h5>
-							<h3 style="right:0px">$<%=tourPrice %></h3>
+							<h3 style="right:0px" id="tourPrice-<%=tourId %>">$<%=tourPrice %></h3>
 						</div>
 						<div class="inputContainer"style="width:100%;display:flex;justify-content:flex-end;">
-							<div class="form-group number mt-4" style="width:100px;">
-							<button class="form-group-btn btn-success btn--xs minus" style="height:55px;font-size:20px">-</button>
-							<input class="form-group-input input--xs" id="quantityInput" type="text" value="<%=tourQuantity %>" disabled style="text-align: center"/>
-							<button class="form-group-btn btn-success btn--xs plus" style="height:55px;font-size:20px">+</button>
-							<script>
-							</script>
+							<div class="form-group number mt-4" style="width:120px;">
+							<button class="form-group-btn btn-success btn--xs minus" style="height:55px;font-size:20px" onclick="totalValue('minus',<%=tourId%>,<%=tourPrice %>)">-</button>
+							<input class="form-group-input input--xs" id="quantityInput-<%=tourId %>" type="text" value="<%=tourQuantity %>" disabled style="text-align: center"/>
+							<button class="form-group-btn btn-success btn--xs plus" style="height:55px;font-size:20px" onclick="totalValue('plus',<%=tourId%>,<%=tourPrice %>)">+</button>
+
 							</div>
 						</div>
 					</div>
 				</div>
+				<%} %>		
 						
 						
-						
-				<%} %>
+				
 			</div>
 		</div>
 		<form class='paymentDetails col-3' submit='#'>
 			<div class='cartTotal p-2 card bg-teal-100'>
 				<div class='subtotal'>
 					<h6>Subtotal</h6>
-					<h6>S$62.95</h6>
+					<h6 id="subtotal">S$<%=subtotal %></h6>
 				</div>
 				<hr>
 				<div class='subtotal mt-2'>
 					<h6>GST</h6>
-					<h6>S$9.90</h6>
+					<h6 id="gst">S$<%=String.format("%.1f", gst)%></h6>
 				</div>
 				<hr>
 				<div class='subtotal mt-2'>
 					<h4>
 						TOTAL
 						</h6>
-						<h4>S$62.95</h4>
+						<h4 id="checkoutPrice">S$<%=checkoutPrice %></h4>
 				</div>
 			</div>
 			<div class='acceptedMethods card bg-teal-100 p-2'>
@@ -112,6 +120,55 @@
 			</div>
 		</form>
 	</div>
+	
+	<%--script for tour quantity --%>
+	<script type="text/javascript">
+							var subtotal = parseFloat(document.getElementById("subtotal").innerHTML.replace("S$",""));
+							var gst = parseFloat(document.getElementById("gst").innerHTML.replace("S$",""));
+							var checkoutPrice = parseFloat(document.getElementById("checkoutPrice").innerHTML.replace("S$",""));
+							
+							function incrementValue(tourid)
+							{	
+							    var value = parseInt(document.getElementById('quantityInput-'+tourid).value, 10);
+							    value = isNaN(value) ? 0 : value; //not a number check for value
+							    if(value<99){
+							        value++;
+							        document.getElementById('quantityInput-'+tourid).value = value;
+							    }
+							    
+							}
+							function decrementValue(tourid)
+							{
+							    var value = parseInt(document.getElementById('quantityInput-'+tourid).value, 10);
+							    value = isNaN(value) ? 0 : value;
+							    if(value>1){
+							        value--;
+							        document.getElementById('quantityInput-'+tourid).value = value;
+							    }
+
+							}
+							function totalValue(btnInput,tourid,tourPrice){
+								if(btnInput == "plus"){
+									incrementValue(tourid);
+									subtotal += parseFloat(tourPrice);
+									gst = subtotal*0.07;
+									checkoutPrice = subtotal + gst;
+									document.getElementById("subtotal").innerHTML = "S$"+subtotal.toFixed(1);
+									document.getElementById("gst").innerHTML = "S$"+gst.toFixed(1);
+									document.getElementById("checkoutPrice").innerHTML = "S$"+checkoutPrice;
+									
+								}
+								else{
+									decrementValue(tourid);
+									subtotal -=parseFloat(tourPrice);
+									gst = subtotal*0.07;
+									checkoutPrice = subtotal + gst;
+									document.getElementById("subtotal").innerHTML = "S$"+subtotal.toFixed(1);
+									document.getElementById("gst").innerHTML ="S$"+gst.toFixed(1);
+									document.getElementById("checkoutPrice").innerHTML = "S$"+checkoutPrice;
+								}
+							}
+							</script>
 </body>
 </html>
 

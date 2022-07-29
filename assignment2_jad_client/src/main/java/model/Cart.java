@@ -5,8 +5,13 @@ import java.util.List;
 public class Cart {
 	private String tourName;
 	private double price;
+	private double totalPrice;
+	
+
 	private String picUrl;
 	private int quantity;
+	private int tourId;
+	
 
 	public Cart() {
 		
@@ -42,6 +47,18 @@ public class Cart {
 
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+	}
+
+	public int getTourId() {
+		return tourId;
+	}
+
+	public void setTourId(int tourId) {
+		this.tourId = tourId;
+	}
+	public double getTotalPrice() {
+		totalPrice = price*quantity;
+		return totalPrice;
 	}
 	
 }
