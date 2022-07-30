@@ -20,3 +20,8 @@
 .customerDetails {
     display: flex; justify-content: center; align-items: center
 }
+
+.purchaseHistory {
+	display: flex;
+	justify-content: space-between;
+}
