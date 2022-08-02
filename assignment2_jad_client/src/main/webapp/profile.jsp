@@ -41,7 +41,6 @@
 	} catch (Exception ex) {
 		response.sendRedirect("profile");
 	}
-	out.println("Profile Pic!:" + img + "<br>");
 
 	request.setAttribute("old_password", password);
 	request.setAttribute("image", img);
