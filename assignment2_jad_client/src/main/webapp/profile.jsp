@@ -28,7 +28,7 @@
 
 	<%
 	User userProfile = (User) request.getAttribute("reqProfile");
-	String username = "", email = "", contact = "", img = "", password = "";
+	String username = "", email = "", contact = "", img = "", password = "", address = "";
 
 	try {
 		username = userProfile.getUsername();
@@ -36,6 +36,7 @@
 		contact = userProfile.getContact();
 		img = userProfile.getPicUrl();
 		password = userProfile.getPassword();
+		address = userProfile.getAddress();
 
 	} catch (Exception ex) {
 		response.sendRedirect("profile");
@@ -73,6 +74,10 @@
 						<h6 class="m-0">Phone No.</h6>
 						<div class="row level">
 							<input type="text" name="update_contact" value=<%=contact%> />
+						</div>
+						<h6 class="m-0">Address</h6>
+						<div class="row level">
+							<input type="text" name="update_address" value=<%=address%> />
 						</div>
 						<h6 class="m-0">Profile Pic</h6>
 						<div class="row level">
@@ -114,10 +119,13 @@
 
 			</div>
 			<div style="display: flex; justify-content: center;">
-				<div class="card w-80p purchaseHistory p-2" style="display: flex; justify-content: space-between; align-items: center;">
-					<h3 class="m-0">View Purchase History</h3>
-					<i class="fas fa-chevron-right fa-2x"></i>
-				</div>
+				<a href="#" class="w-100p">
+					<div class="card mx-10 purchaseHistory p-2"
+						style="display: flex; justify-content: space-between; align-items: center;">
+						<h3 class="m-0">View Purchase History</h3>
+						<i class="fas fa-chevron-right fa-2x"></i>
+					</div>
+				</a>
 			</div>
 		</div>
 	</div>
