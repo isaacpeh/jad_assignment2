@@ -118,7 +118,7 @@
 
 			</div>
 			<div style="display: flex; justify-content: center;">
-				<a href="#" class="w-100p">
+				<a href="customer_history.jsp" class="w-100p">
 					<div class="card mx-10 purchaseHistory p-2"
 						style="display: flex; justify-content: space-between; align-items: center;">
 						<h3 class="m-0">View Purchase History</h3>
