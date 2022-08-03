@@ -45,14 +45,15 @@ public class StripeCheckout extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		long amount = (long) request.getAttribute("");
+		String amount = request.getParameter("amount");
+		amount = "9876";
+		long amountLong = Long.parseLong(amount);
 		String currency = (String) request.getAttribute("");
-		amount = 12345;
 		currency = "sgd";
 		Stripe.apiKey = "sk_test_51Kq9MBAJnEcRMEUtMM0mN2GhYLowzYYwq5FIM23xHuGcuNejonbuurPasDfnOfLSfh9SvyeQpOg4TGMGiCuAB1d200BLXLdD4V";
 		
 		try {
-			PaymentIntent intent = StripePayment.createNewPayment(amount, currency);
+			PaymentIntent intent = StripePayment.createNewPayment(amountLong, currency);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("checkout.jsp");
 			request.setAttribute("client_secret", intent.getClientSecret());
 			dispatcher.forward(request, response);

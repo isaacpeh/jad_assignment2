@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,19 +11,24 @@
 	<%
 	String client_secret = (String) request.getAttribute("client_secret");
 	%>
-    <form id="payment-form">
-      <div id="payment-element">
-        <!--Stripe.js injects the Payment Element-->
-      </div>
-      <button id="submit">
-        <div class="spinner hidden" id="spinner"></div>
-        <span id="button-text">Pay now</span>
-      </button>
-      <div id="payment-message" class="hidden"></div>
-    </form>
+	<%@ include file="header.jsp"%>
+	<h1 align="center" style="margin-top: 5rem;">Payment Method</h1>
+	<div class="mx-8 p-4 card">
+		<form id="payment-form">
+			<div id="payment-element">
+				<!--Stripe.js injects the Payment Element-->
+			</div>
+			<button id="submit" style="margin-top: 2rem; background-color: blue; color: white;">
+				<div class="spinner hidden" id="spinner"></div>
+				<span id="button-text">Confirm Payment</span>
+			</button>
+			<div id="payment-message" class="hidden"></div>
+		</form>
+	</div>
+	<%@ include file="footer.html"%>
 	<script>
 	const getUrl = window.location;
-	const redirectUrl = getUrl .protocol + "//" + getUrl.host + '${pageContext.request.contextPath}/pay'
+	const redirectUrl = getUrl .protocol + "//" + getUrl.host + '${pageContext.request.contextPath}/Pay'
 	const stripe = Stripe('pk_test_51Kq9MBAJnEcRMEUtef9FXsOU425WAMCfQlMYTM61PBRLOyXTpVyQelHN00lyScDJk1xzxtlDqckU1Jy3CNMKiNEN00GUR5RX2x');
 	
 	const options = {

@@ -58,7 +58,7 @@ public class Pay extends HttpServlet {
             // Here is where i send the request to order history upon success
 
 
-            response.sendRedirect(request.getContextPath() + "/success.jsp");
+            response.sendRedirect(request.getContextPath() + "/paymentSuccess.jsp");
 
             // Save cart to database with the id along with it
         } catch (StripeException e) {
