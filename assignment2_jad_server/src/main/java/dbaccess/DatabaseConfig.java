@@ -6,7 +6,7 @@
 	GEORGE		P2143990
  */
 
-package controller;
+package dbaccess;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -17,9 +17,8 @@ public class DatabaseConfig {
 		Connection conn = null;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			// String connURL =
-			// "jdbc:mysql://ipecsql.ddns.net:3306/assignment2_jad?user=jadassignment&password=P@ssw0rd&serverTimezone=UTC";
-			String connURL = "jdbc:mysql://localhost:3306/assignment2_jad?user=root&password=<yourownpassword>&serverTimezone=UTC";
+			String connURL = "jdbc:mysql://ipecsql.ddns.net:3306/assignment2_jad?user=jadassignment&password=P@ssw0rd&serverTimezone=UTC";
+			// String connURL = "jdbc:mysql://localhost:3306/assignment2_jad?user=root&password=<yourownpassword>&serverTimezone=UTC";
 			conn = DriverManager.getConnection(connURL);
 
 		} catch (Exception ex) {

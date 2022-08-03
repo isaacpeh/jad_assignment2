@@ -6,7 +6,7 @@
 	GEORGE		P2143990
  */
 
-package model;
+package dbaccess;
 
 import java.util.List;
 
@@ -19,6 +19,7 @@ public class Tour {
 	private List<String> picUrl;
 	private int tourid;
 	private List<Integer> categoryid;
+	private String category;
 	private int totalSales;
 	private String created_at;
 
@@ -110,5 +111,25 @@ public class Tour {
 
 	public void setCreated_at(String created_at) {
 		this.created_at = created_at;
+	}
+
+	public String getCustomJSON() {
+		return "{" +
+				"\"Tour ID\" : " + this.getTourid() + ", " + 
+				"\"Name\" : \"" + this.getTourName() + "\", " + 
+				"\"Price\" : \"$" + this.getPrice() + "\", " + 
+				"\"Slots Available\" : \"" + this.getSlotsAvailable() + "\", " + 
+				"\"Brief Description\" : \"" + this.getbDescription() + "\", " + 
+				"\"Detailed Description\" : \"" + this.getdDescription() + "\", " + 
+				"\"Picture(s) URL\" : \"" + this.getPicUrl() + "\"" + 
+				"}";
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
 	}
 }

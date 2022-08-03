@@ -55,17 +55,18 @@ public class UserSearchController extends HttpServlet {
 		}
 		
 		try {
-			userFilter_number = request.getParameter("userfilternumber").trim();
+			userFilter_number = request.getParameter("userFilterNumber").trim();
 		} catch (Exception ex) {
 			// input error here
 		}
 		
 		try {
-			userFilter_name = request.getParameter("userfiltername").trim();
+			userFilter_name = request.getParameter("userFilterName").trim();
 		} catch (Exception ex) {
 			// input error here
 		}
 		
+
 		if (userFilter != null && userFilter.equalsIgnoreCase("address")) {
 			result = um.showAllUsersAddr();
 
@@ -86,7 +87,7 @@ public class UserSearchController extends HttpServlet {
 			result = um.showAllUsers();
 		}
 		
-		request.setAttribute("reqUsers", result);
+		request.setAttribute("mgmtUsers", result);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("test.jsp");
 		dispatcher.forward(request, response);
 
