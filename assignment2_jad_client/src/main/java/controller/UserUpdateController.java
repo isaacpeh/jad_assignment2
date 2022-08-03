@@ -55,7 +55,7 @@ public class UserUpdateController extends HttpServlet {
 		String email = request.getParameter("update_email");
 		String contact = request.getParameter("update_contact");
 		String pic = request.getParameter("current_pic");
-		String address = request.getParameter("current_address");
+		String address = request.getParameter("update_address");
 		String role = " ";
 
 		int loggedInUser = 0;

@@ -281,6 +281,7 @@ public class TourManager {
 				tempTour.setdDescription(rs.getString("detailed_description"));
 				tempTour.setPrice(rs.getDouble("price"));
 				tempTour.setSlotsAvailable(rs.getInt("slots_available"));
+				tempTour.setCreated_at(rs.getString("created_at"));
 				result.add(tempTour);
 			}
 		} catch (SQLException ex) {

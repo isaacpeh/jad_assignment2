@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.TourRecord;
+import model.TourRecordManager;
 import model.User;
 import model.UserManager;
 
@@ -36,30 +38,55 @@ public class SalesSearchController extends HttpServlet {
 		// response.getWriter().append("Served at: ").append(request.getContextPath());
 		
 		UserManager um = new UserManager();
+		TourRecordManager trm = new TourRecordManager();
 		String salesFilter = null;
-		List<User> result = null;
+		String dateFrom = null;
+		String dateTo = null;
+		int salesTourid = -1;
+		List<User> userResult = null;
+		List<TourRecord> salesResult = null;
 		
+		// ---------------------------------------------
+		// (1) Pulling Data
+		// ---------------------------------------------
 		try {
 			salesFilter = request.getParameter("salesfilter").trim();
 		} catch (Exception ex) {
 			// input error here
 		}
 		
+		try {
+			dateFrom = request.getParameter("dateFrom").trim() + " 00:00:00";
+			dateTo = request.getParameter("dateTo").trim() + " 23:59:59";
+		} catch (Exception ex) {
+			// input error here
+		}
+		
+		try {
+			salesTourid = Integer.parseInt(request.getParameter("salesTourid").trim());
+		} catch (Exception ex) {
+			// input error here
+		}
+		
+		// ---------------------------------------------
+		// (2) Processing data
+		// ---------------------------------------------
 		if (salesFilter != null && salesFilter.equalsIgnoreCase("top")) {
-			result = um.showTopUsers();
+			userResult = trm.showTopUsers();
+			request.setAttribute("mgmtSalesUsers", userResult);
+
+		} else if (dateFrom != null && dateTo != null) {
+			salesResult = trm.getRecordByDate(dateFrom, dateTo);
+			request.setAttribute("mgmtSalesTours", salesResult);
+			
+		} else if (salesTourid != -1) {
+			salesResult = trm.getUserByRecord(salesTourid);
+			request.setAttribute("mgmtSalesUsers", salesResult);
+
 		}
 
-		request.setAttribute("reqUsers", result);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("test.jsp");
 		dispatcher.forward(request, response);
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
 	}
 
 }

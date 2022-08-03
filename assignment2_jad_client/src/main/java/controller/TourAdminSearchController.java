@@ -51,11 +51,10 @@ public class TourAdminSearchController extends HttpServlet {
 		String adminFilter = null;
 		int adminFilter_slot = -1;
 		List<Tour> result = new ArrayList<Tour>();
+
 		/* --------------------------------------------
 		 * 2. Validate data
 		 * -------------------------------------------- */
-
-
 		try {
 			adminFilter = request.getParameter("adminfilter");
 		} catch (Exception ex) {
@@ -63,7 +62,7 @@ public class TourAdminSearchController extends HttpServlet {
 		}
 
 		try {
-			adminFilter_slot = Integer.parseInt(request.getParameter("adminfilterslot").trim());
+			adminFilter_slot = Integer.parseInt(request.getParameter("adminFilterSlot").trim());
 		} catch (Exception ex) {
 			// input error here
 		}
@@ -94,7 +93,7 @@ public class TourAdminSearchController extends HttpServlet {
 			result = tm.showTours();
 		}
 
-		request.setAttribute("reqTours", result);
+		request.setAttribute("mgmtTours", result);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("test.jsp");
 		dispatcher.forward(request, response);
 	}

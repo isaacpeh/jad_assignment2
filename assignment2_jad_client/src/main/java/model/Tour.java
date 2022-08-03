@@ -20,6 +20,7 @@ public class Tour {
 	private int tourid;
 	private List<Integer> categoryid;
 	private int totalSales;
+	private String created_at;
 
 	public Tour() {
 
@@ -101,5 +102,13 @@ public class Tour {
 
 	public void setTotalSales(int totalSales) {
 		this.totalSales = totalSales;
+	}
+
+	public String getCreated_at() {
+		return created_at;
+	}
+
+	public void setCreated_at(String created_at) {
+		this.created_at = created_at;
 	}
 }
