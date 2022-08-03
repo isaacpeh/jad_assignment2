@@ -25,7 +25,7 @@ import model.TourManager;
 /**
  * Servlet implementation class TourShowBothController
  */
-@WebServlet(urlPatterns = { "/tours", "/admin_tours" })
+@WebServlet(urlPatterns = { "/tours", "/admin_tours", "/test" })
 public class TourSearchController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

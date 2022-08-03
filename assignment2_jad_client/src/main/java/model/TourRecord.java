@@ -2,8 +2,11 @@ package model;
 
 public class TourRecord {
 	private int userid;
+	private String username;
 	private int tourid;
+	private String tourname;
 	private int quantity;
+	private String purchased_at;
 
 	public TourRecord() {
 
@@ -13,6 +16,30 @@ public class TourRecord {
 		this.userid = userid;
 		this.tourid = tourid;
 		this.quantity = quantity;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getTourname() {
+		return tourname;
+	}
+
+	public void setTourname(String tourname) {
+		this.tourname = tourname;
+	}
+
+	public String getPurchased_at() {
+		return purchased_at;
+	}
+
+	public void setPurchased_at(String purchased_at) {
+		this.purchased_at = purchased_at;
 	}
 
 	public int getUserid() {

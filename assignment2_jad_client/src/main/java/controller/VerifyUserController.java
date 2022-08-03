@@ -64,8 +64,7 @@ public class VerifyUserController extends HttpServlet {
 		int userid = um.verifyUser(loginid, password);
 
 		if (userid != -1 && userid != 0) {
-			// pass
-
+			um.updateLoggedIn(userid);
 			User result = um.showUser(userid);
 			if (result.getRole().equals("Admin")) {
 				HttpSession session = request.getSession();

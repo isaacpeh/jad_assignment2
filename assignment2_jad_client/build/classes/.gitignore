@@ -1,5 +1,8 @@
-/controller/
 /model/
+<<<<<<< HEAD
 /stripepayment/
 /servlet/
 /payment/
+=======
+/controller/
+>>>>>>> main
