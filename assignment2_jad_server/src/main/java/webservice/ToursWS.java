@@ -1,9 +1,17 @@
 package webservice;
 
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import javax.json.stream.JsonParsingException;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -23,7 +31,14 @@ public class ToursWS {
 	@GET
 	@Path("/getTours")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAllTours() {
+	public Response getAllTours(@HeaderParam("API") String api) {
+		if(api == null || !api.equals("generatedapi")) {
+			return Response
+					.status(Response.Status.UNAUTHORIZED)
+					.entity("{\"Message\" : \"invalid api key\"}")
+					.build();
+		}
+		
 		List<Tour> allTours = new ArrayList<Tour>();
 		String[] ToursJSONString = new String[0];
 		String jsonOutput = "";
@@ -36,7 +51,7 @@ public class ToursWS {
 			if (allTours.size() == 0) {
 				return Response
 						.status(Response.Status.OK)
-						.entity("{\"Message\" : no tours available}")
+						.entity("{\"Message\" : \"no tours available\"}")
 						.build();
 			}
 			
@@ -70,7 +85,13 @@ public class ToursWS {
 	@GET
 	@Path("/getCategories")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getCategories() {
+	public Response getCategories(@HeaderParam("API") String api) {
+		/*
+		 * if(api == null || !api.equals("generatedapi")) { return Response
+		 * .status(Response.Status.UNAUTHORIZED)
+		 * .entity("{\"Message\" : \"invalid api key\"}") .build(); }
+		 */
+		
 		List<Category> allCategories = new ArrayList<Category>();
 		String[] CategoryJSONString = new String[0];
 		String jsonOutput = "";
@@ -83,24 +104,22 @@ public class ToursWS {
 			if (allCategories.size() == 0) {
 				return Response
 						.status(Response.Status.OK)
-						.entity("{\"Message\" : no categories available}")
+						.entity("{\"Message\" : \"no categories available\"}")
 						.build();
 			}
 
-			for (int i = 0; i < allCategories.size(); i++) {
-				CategoryJSONString[i] = allCategories.get(i).getCustomJSON();
-			}
-
-			jsonOutput = "{" +
-					"\"Categories\" : [" + 
-										String.join(",", CategoryJSONString) + 
-									"]," +
-					"\"Total Categories\" : " + allCategories.size() +
-				"}";
+			/*
+			 * for (int i = 0; i < allCategories.size(); i++) { CategoryJSONString[i] =
+			 * allCategories.get(i).getCustomJSON(); }
+			 * 
+			 * jsonOutput = "{" + "\"Categories\" : [" + String.join(",",
+			 * CategoryJSONString) + "]," + "\"Total Categories\" : " + allCategories.size()
+			 * + "}";
+			 */
 
 			return Response
 					.status(Response.Status.OK)
-					.entity(jsonOutput)
+					.entity(allCategories)
 					.build();
 
 		} catch (Exception ex) {
@@ -116,7 +135,14 @@ public class ToursWS {
 	@GET
 	@Path("/getCategoryTours")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getToursByCategory(@QueryParam("catid") String cat_id) {
+	public Response getToursByCategory(@QueryParam("catid") String cat_id, @HeaderParam("API") String api) {
+		if(api == null || !api.equals("generatedapi")) {
+			return Response
+					.status(Response.Status.UNAUTHORIZED)
+					.entity("{\"Message\" : \"invalid api key\"}")
+					.build();
+		}
+		
 		List<Tour> catTours = new ArrayList<Tour>();
 		String[] ToursJSONString = new String[0];
 		String cat_name = "";
@@ -131,7 +157,7 @@ public class ToursWS {
 			ToursJSONString = new String[catTours.size()];
 
 			if (catTours.size() == 0) {
-				return Response.status(Response.Status.OK).entity("{\"Message\" : no tours available}").build();
+				return Response.status(Response.Status.OK).entity("{\"Message\" : \"no tours available\"}").build();
 			}
 			
 			cat_name = catTours.get(1).getCategory();
@@ -167,83 +193,94 @@ public class ToursWS {
 
 	}
 	
-	/*
-	 * // Update slot
-	 * 
-	 * @POST
-	 * 
-	 * @Path("/updateSlot")
-	 * 
-	 * @Produces(MediaType.APPLICATION_JSON)
-	 * 
-	 * @Consumes(MediaType.APPLICATION_JSON) public Response createUser(String
-	 * inputData) {
-	 * 
-	 * // validate bad json input, negative age, improper json format, missing data
-	 * 
-	 * int rowsAffected = -1; String jsonOutput = "";
-	 * 
-	 * try { JsonReader jsonReader = Json.createReader(new StringReader(inputData));
-	 * 
-	 * // this statement can cause the JsonParsingException error JsonObject
-	 * inputJSONObj = jsonReader.readObject();
-	 * 
-	 * String uId = inputJSONObj.getString("userid"); String uGender =
-	 * inputJSONObj.getString("gender"); int uAge = inputJSONObj.getInt("age");
-	 * 
-	 * // -------------------------- // data validation //
-	 * -------------------------- uGender = uGender.toLowerCase();
-	 * 
-	 * if (!uGender.trim().equals("male") && !uGender.trim().equals("female")) {
-	 * return Response .status(Response.Status.BAD_REQUEST)
-	 * .entity("{\"error\" : \"bad gender data\"}") .build(); }
-	 * 
-	 * if (uAge < 0 || uAge > 120) { return Response
-	 * .status(Response.Status.BAD_REQUEST)
-	 * .entity("{\"error\" : \"bad age data\"}") .build(); }
-	 * 
-	 * // -------------------------- // data now safe to use //
-	 * -------------------------- UserDAO db = new UserDAO(); rowsAffected =
-	 * db.insertUser(uId, uAge, uGender); jsonOutput = "{" + "\"affectedRows\" : " +
-	 * rowsAffected + "}";
-	 * 
-	 * System.out.println("...done create user..in UserService.");
-	 * 
-	 * } catch (NullPointerException ex) { // deal with missing data String
-	 * someError = "{" + "\"error\" : \"bad input data\"" + "\"details\" : \"" +
-	 * ex.toString().replace("java.lang.NullPointerException", "") + "\"" + "}";
-	 * return Response .status(Response.Status.BAD_REQUEST) .entity(someError)
-	 * .build();
-	 * 
-	 * } catch (JsonParsingException ex) { // deal with malformed json input data,
-	 * missing comma, missing double quote String someError = "{" +
-	 * "\"error\" : \"bad input data\"" + "}"; return Response
-	 * .status(Response.Status.BAD_REQUEST) .entity(someError) .build();
-	 * 
-	 * } catch (Exception ex) { return Response.status(Response.Status.BAD_REQUEST)
-	 * .entity("{\"error\" : \"" + ex.toString() + "\"" + "}") .build(); }
-	 * 
-	 * return Response .status(Response.Status.OK) .entity(jsonOutput) .build(); }
-	 */
+	// UPDATE SLOT
+	@POST
+	@Path("/updateSlot")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response updateSlot(String inputData, @HeaderParam("API") String api) {
+		if(api == null || !api.equals("generatedapi")) {
+			return Response
+					.status(Response.Status.UNAUTHORIZED)
+					.entity("{\"Message\" : \"invalid api key\"}")
+					.build();
+		}
+
+		// validate bad JSON input, negative age, improper JSON format, missing data
+		int rowsAffected = -1;
+		String jsonOutput = "";
+
+		try {
+			JsonReader jsonReader = Json.createReader(new StringReader(inputData));
+
+			// this statement can cause the JsonParsingException error
+			JsonObject inputJSONObj = jsonReader.readObject();
+
+			int tourid = inputJSONObj.getInt("tourid");
+			int quantity = inputJSONObj.getInt("quantity");
+
+			// --------------------------
+			// data validation
+			// --------------------------
+			if (tourid <= 0 || quantity <= 0) {
+				return Response
+						.status(Response.Status.BAD_REQUEST)
+						.entity("{\"Error\" : \"please input valid tour id and quantity\"}")
+						.build();
+			}
+
+			// --------------------------
+			// data now safe to use
+			// --------------------------
+			TourDAO db = new TourDAO();
+			int tourQty = -1;
+			tourQty = db.getSlot(tourid);
+
+			if (tourQty != -1 && tourQty < quantity) {
+				return Response
+						.status(Response.Status.OK)
+						.entity("{\"Message\" : \"Only " + tourQty + " slots left for tour id: " + tourid + "\"}")
+						.build();
+			}
+			
+			rowsAffected = db.updateTour(tourid, (tourQty - quantity));
+			jsonOutput = "{" + 
+							"\"Message\" : \"Successfully update slots\"," + 
+							"\"affectedRows\" : " + rowsAffected 
+						+ "}";
+
+		} catch (NullPointerException ex) {
+			// missing data
+			String errorJSON = "{" + 
+									"\"Error\" : \"missing data\"," + 
+									"\"Details\" : \"" + ex.toString().replace("java.lang.NullPointerException", "") + "\"" 
+								+ "}";
+			return Response
+					.status(Response.Status.BAD_REQUEST)
+					.entity(errorJSON)
+					.build();
+
+		} catch (JsonParsingException ex) {
+			// malformed JSON
+			String errorJSON = "{" + 
+									"\"Error\" : \"bad input data\"" 
+								+ "}";
+			return Response
+					.status(Response.Status.BAD_REQUEST)
+					.entity(errorJSON)
+					.build();
+
+		} catch (Exception ex) {
+			return Response
+					.status(Response.Status.BAD_REQUEST)
+					.entity("{\"Error\" : \"" + ex.toString() + "\"" + "}")
+					.build();
+		}
+
+		return Response
+				.status(Response.Status.OK)
+				.entity(jsonOutput)
+				.build();
+	}
 	
-	
-	/*
-	 * @POST
-	 * 
-	 * @Path("updateTourSlot")
-	 * 
-	 * @Consumes(MediaType.APPLICATION_JSON)
-	 * 
-	 * @Produces(MediaType.APPLICATION_JSON) public Response addByJSON(Member m) {
-	 * // be careful, if the input JSON data is not properly setup, // then the
-	 * conversion to the Member object might fail String name = m.getName(); String
-	 * password = m.getPassword();
-	 * 
-	 * MemberManager memberManager = new MemberManager(); int rowsAffected =
-	 * memberManager.create(name, password);
-	 * 
-	 * String jsonOutput = "{" + "\"rowsAffected\" : " + rowsAffected + "}";
-	 * 
-	 * return Response.status(Response.Status.OK).entity(jsonOutput).build(); }
-	 */
 }

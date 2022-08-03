@@ -232,7 +232,7 @@ public class TourDAO {
 
 	}
 	
-	// UPDATE TOUR //dbl cfm use slots or tour.setslots
+	// UPDATE TOUR
 	public int updateTour(int tourid, int slots) {
 		Connection con = DatabaseConfig.getConn();
 		String sql = "UPDATE "
@@ -246,6 +246,7 @@ public class TourDAO {
 		try {
 			ps = con.prepareStatement(sql);
 			ps.setInt(1, slots);
+			ps.setInt(2, tourid);
 			result = ps.executeUpdate();
 	
 		} catch (SQLException ex) {
@@ -258,4 +259,35 @@ public class TourDAO {
 		return result;
 	}
 
+	// GET TOUR SLOTS
+	public int getSlot(int tourid) {
+		Connection con = DatabaseConfig.getConn();
+		String sql = "SELECT "
+						+ "slots_available "
+					+ "FROM "
+						+ "tour "
+					+ "WHERE "
+						+ "tourid = ?";
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int result = -1;
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, tourid);
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				result = rs.getInt("slots_available");
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+	
+		} finally {
+		    try { if (ps != null) ps.close(); } catch (Exception e) {};
+		    try { if (con != null) con.close(); } catch (Exception e) {};
+		}
+		return result;
+	}
+	
 }
