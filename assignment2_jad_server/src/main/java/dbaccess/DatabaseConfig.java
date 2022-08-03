@@ -6,7 +6,7 @@
 	GEORGE		P2143990
  */
 
-package controller;
+package dbaccess;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
