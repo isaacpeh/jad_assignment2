@@ -22,6 +22,7 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -60,7 +61,8 @@ public class CategoryShowAllController extends HttpServlet {
 		Client client = ClientBuilder.newClient();
 		String restUrl = "http://localhost:8080/assignment2_jad_server/ToursWS/getCategories";
 		WebTarget target = client.target(restUrl);
-		Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON);
+		Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, "generatedapi");
 		Response resp = invocationBuilder.get();
 
 		if (resp.getStatus() == Response.Status.OK.getStatusCode()) {

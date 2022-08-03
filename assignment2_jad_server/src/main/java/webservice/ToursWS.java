@@ -31,7 +31,7 @@ public class ToursWS {
 	@GET
 	@Path("/getTours")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAllTours(@HeaderParam("API") String api) {
+	public Response getAllTours(@HeaderParam("Authorization") String api) {
 		if(api == null || !api.equals("generatedapi")) {
 			return Response
 					.status(Response.Status.UNAUTHORIZED)
@@ -85,13 +85,15 @@ public class ToursWS {
 	@GET
 	@Path("/getCategories")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getCategories(@HeaderParam("API") String api) {
-		/*
-		 * if(api == null || !api.equals("generatedapi")) { return Response
-		 * .status(Response.Status.UNAUTHORIZED)
-		 * .entity("{\"Message\" : \"invalid api key\"}") .build(); }
-		 */
+	public Response getCategories(@HeaderParam("Authorization") String api) {
 		
+		if (api == null || !api.equals("generatedapi")) {
+			return Response
+					.status(Response.Status.UNAUTHORIZED)
+					.entity("{\"Message\" : \"invalid api key\"}")
+					.build();
+		}
+
 		List<Category> allCategories = new ArrayList<Category>();
 		String[] CategoryJSONString = new String[0];
 		String jsonOutput = "";
@@ -135,7 +137,7 @@ public class ToursWS {
 	@GET
 	@Path("/getCategoryTours")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getToursByCategory(@QueryParam("catid") String cat_id, @HeaderParam("API") String api) {
+	public Response getToursByCategory(@QueryParam("catid") String cat_id, @HeaderParam("Authorization") String api) {
 		if(api == null || !api.equals("generatedapi")) {
 			return Response
 					.status(Response.Status.UNAUTHORIZED)
@@ -198,7 +200,7 @@ public class ToursWS {
 	@Path("/updateSlot")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateSlot(String inputData, @HeaderParam("API") String api) {
+	public Response updateSlot(String inputData, @HeaderParam("Authorization") String api) {
 		if(api == null || !api.equals("generatedapi")) {
 			return Response
 					.status(Response.Status.UNAUTHORIZED)
