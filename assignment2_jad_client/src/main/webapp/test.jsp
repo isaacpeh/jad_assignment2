@@ -19,6 +19,9 @@
 		List<TourRecord> displaySalesTour = (ArrayList<TourRecord>) request.getAttribute("mgmtSalesTours");
 		List<TourRecord> displaySalesUser = (ArrayList<TourRecord>) request.getAttribute("mgmtSalesUsers");
 		
+		// user sales record
+		List<TourRecord> salesRecord = (ArrayList<TourRecord>) request.getAttribute("reqProfileRecords");
+		
 	try{
 		for(Tour i : displayTours){
 			out.println("Tour ID: " + i.getTourid() + "<br>");
@@ -80,6 +83,17 @@
 	} catch (Exception ex){
 		
 	}
+	
+	try{
+		for(TourRecord i : salesRecord){
+			out.println("Tour name: " +i.getTourname() + "<br>");
+			out.println("Quantity: " + i.getQuantity() + "<br>");
+			out.println("Purchase at: " + i.getPurchased_at() + "<br>");
+			out.println("<br>---------------<br>");
+		}
+	} catch (Exception ex){
+		
+	}
 		
 	%>
 
@@ -129,7 +143,7 @@
  </form>
  <h5>Sales Filters by date</h5>
 <form action="/assignment2_jad_client/admin_sales_filter" method="get">
- 	<label>Date From:</label>
+ 	  <label>Date From:</label>
 	  <input type="date" name="dateFrom"> <br>
 	  <label>Date To:</label>
 	  <input type="date" name="dateTo">
@@ -141,5 +155,13 @@
 	  <input type="submit">
  </form>
  
+ <h2>User Tour History</h2>
+ <h5>Tour history </h5>
+ <form action="/assignment2_jad_client/TourRecordShowOneController" method="get">
+ 	  <label>Date From:</label>
+	  <input type="date" name="dateFrom"> <br>
+	  <label>Get Tour History</label>
+	  <input type="submit">
+ </form>
 </body>
 </html>
