@@ -211,12 +211,14 @@ public class TourRecordManager {
 		Connection con = DatabaseConfig.getConn();
 		String sql = "SELECT "
 						+ "O.tourid, "
-						+ "T.tourname "
+						+ "T.tourname, "
+						+ "O.quantity, "
+						+ "O.purchased_at "
 					+ "FROM "
 						+ "order_history AS O, "
 						+ "tour AS T "
 					+ "WHERE "
-						+ "T.tourid = O.tourid AND"
+						+ "T.tourid = O.tourid AND "
 						+ "O.userid = ?";
 		
 		ResultSet rs = null; 
