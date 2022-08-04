@@ -1,20 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Purchase History</title>
-<link href="https://unpkg.com/cirrus-ui" type="text/css"
-	rel="stylesheet" />
-<link rel="stylesheet"
-	href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
-	integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
-	crossorigin="anonymous" />
+<title>Insert title here</title>
 </head>
 <body>
 	<%@ include file="header.jsp"%>
 	<%@ page import="model.TourRecord, model.TourRecordManager"%>
+	<!-- TODO: Need to check why customerOrders is getting null -->
 	<%
 	List<TourRecord> customerOrders = (List<TourRecord>) request.getAttribute("reqProfileRecords");
 	%>

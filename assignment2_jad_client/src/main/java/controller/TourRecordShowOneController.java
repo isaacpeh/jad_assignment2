@@ -60,12 +60,13 @@ public class TourRecordShowOneController extends HttpServlet {
 		List<TourRecord> result = trm.getRecordByUser(loggedInUser);
 
 		if (result == null) {
-			response.sendRedirect("profile.jsp?errCode=NoRecords");
+			response.sendRedirect("customer_history.jsp?errCode=NoRecords");
 			return;
 
 		} else {
+			System.out.println(result);
 			request.setAttribute("reqProfileRecords", result);
-			RequestDispatcher dispatcher = request.getRequestDispatcher("profile.jsp");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("customer_history.jsp");
 			dispatcher.forward(request, response);
 		}
 	}

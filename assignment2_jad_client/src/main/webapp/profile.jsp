@@ -22,7 +22,6 @@
 <title>User Profile</title>
 </head>
 <body>
-
 	<%@ page import="model.User, model.UserManager"%>
 	<%@ include file="header.jsp"%>
 
