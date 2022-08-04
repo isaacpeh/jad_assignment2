@@ -19,6 +19,7 @@
 		List<TourRecord> displaySalesTour = (ArrayList<TourRecord>) request.getAttribute("mgmtSalesTours");
 		List<TourRecord> displaySalesUser = (ArrayList<TourRecord>) request.getAttribute("mgmtSalesUsers");
 		
+		
 	try{
 		for(Tour i : displayTours){
 			out.println("Tour ID: " + i.getTourid() + "<br>");

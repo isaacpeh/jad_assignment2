@@ -16,10 +16,10 @@
 	<%@ include file="header.jsp"%>
 	<%@ page import="model.TourRecord, model.TourRecordManager"%>
 	<%
-	List<TourRecord> customerOrders = (List<TourRecord>) request.getAttribute("reqProfileRecords");
+	ArrayList<TourRecord> salesRecord = (ArrayList<TourRecord>) request.getAttribute("reqProfileRecords");
 	%>
 	<h1 align="center" style="margin-top: 5rem;">Order History</h1>
-	<table class="table bordered mx-4">
+	<table class="table bordered">
 		<thead>
 			<tr>
 				<th><abbr title="OrderNumber">Order Number</abbr></th>
@@ -29,18 +29,32 @@
 			</tr>
 		</thead>
 		<tbody>
-			<%for (TourRecord i : customerOrders) { %>
-				<% int tID = i.getTourid(); %>
-				<% String tName = i.getTourname(); %>
-				<% int tQuantity = i.getQuantity(); %>
-				<% String tPurchasedAt = i.getPurchased_at(); %>
+			<%
+			try {
+			%>
+			<%
+			for (TourRecord i : salesRecord) {
+			%>
+			<%
+			int tID = i.getTourid();
+			String tName = i.getTourname();
+			int tQuantity = i.getQuantity();
+			String tPurchasedAt = i.getPurchased_at();
+			%>
 			<tr>
-				<th><%=tID %></th>
-				<td><%=tName %></td>
-				<td><%=tQuantity %></td>
-				<td><%=tPurchasedAt %></td>
+				<th><%=tID%></th>
+				<td><%=tName%></td>
+				<td><%=tQuantity%></td>
+				<td><%=tPurchasedAt%></td>
 			</tr>
-			<%} %>
+			<%
+			}
+			%>
+			<%
+			} catch (Exception e) {
+			response.sendRedirect("/assignment2_jad_client/TourRecordShowOneController");
+			}
+			%>
 		</tbody>
 	</table>
 	<%@ include file="footer.html"%>
