@@ -44,38 +44,57 @@ public class TourAdminSearchController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		/* --------------------------------------------
-		 * 1. Pull data
-		 * -------------------------------------------- */
 		TourManager tm = new TourManager();
 		String adminFilter = null;
 		int adminFilter_slot = -1;
+		int adminFilter_priceF = -1;
+		int adminFilter_priceT = -1;
 		List<Tour> result = new ArrayList<Tour>();
+		
+		/* --------------------------------------------
+		 * 1. Pull data
+		 * -------------------------------------------- */
+		
+		adminFilter = request.getParameter("adminfilter");
 
 		/* --------------------------------------------
 		 * 2. Validate data
 		 * -------------------------------------------- */
+		
 		try {
-			adminFilter = request.getParameter("adminfilter");
+			adminFilter_slot = Integer.parseInt(request.getParameter("adminFilterSlot").trim());
+		} catch (NumberFormatException ex) {
+			System.out.println("slotNumberError");
+			response.sendRedirect("test?errCode=slotNumberError");
+			return;
 		} catch (Exception ex) {
-			// input error here
+
 		}
 
 		try {
-			adminFilter_slot = Integer.parseInt(request.getParameter("adminFilterSlot").trim());
+			adminFilter_priceF = Integer.parseInt(request.getParameter("adminFilterPriceF").trim());
+			adminFilter_priceT = Integer.parseInt(request.getParameter("adminFilterPriceT").trim());
+
+		} catch (NumberFormatException ex) {
+			System.out.println("priceNumberError");
+			response.sendRedirect("test?errCode=priceNumberError");
+			return;
+
 		} catch (Exception ex) {
-			// input error here
+
 		}
 
 		/* --------------------------------------------
 		 * 3. Process request
 		 * -------------------------------------------- */
 
-		// && source.equalsIgnoreCase("admin_category")
 		if (adminFilter_slot != -1) {
 			// Slot
 			result = tm.showToursSlot(adminFilter_slot);
-			
+		} else if (adminFilter_priceF != -1 && adminFilter_priceT != -1) {
+			// Price range
+			result = tm.showToursPrice(adminFilter_priceF, adminFilter_priceT);
+		
 		} else if (adminFilter != null && adminFilter.equalsIgnoreCase("popularity")) {
 			// Popularity
 			result = tm.showToursPopularity();
@@ -89,12 +108,46 @@ public class TourAdminSearchController extends HttpServlet {
 			result = tm.showToursNew();
 
 		} else {
-			// Show all
-			result = tm.showTours();
+			response.sendRedirect("test?errCode=noFilter");
+			return;
 		}
 
 		request.setAttribute("mgmtTours", result);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("test.jsp");
 		dispatcher.forward(request, response);
 	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		TourManager tm = new TourManager();
+		int tourid_active = -1;
+		int tourid_option = -1;
+		
+		try {
+			tourid_active = Integer.parseInt(request.getParameter("tourid").trim());
+			tourid_option = Integer.parseInt(request.getParameter("tour_isActive").trim());
+		} catch (NumberFormatException ex) {
+			System.out.println("tourActiveError");
+			response.sendRedirect("test?errCode=tourActiveError");
+			return;
+		} catch (Exception ex) {
+
+		}
+		
+		if (tourid_active != -1) {
+			// Update active
+			int affectedRows = tm.updateActive(tourid_active, tourid_option);
+
+			if (affectedRows == 1) {
+				response.sendRedirect("test?message=successfullyUpdated");
+				return;
+			} else {
+				response.sendRedirect("test?errCode=unsuccessfulUpdate");
+				return;
+			}
+		}
+		
+	}
+
 }

@@ -9,6 +9,10 @@
 <body>
 	<%@ page import="model.*, model.Category,java.util.*"%>
 	<%
+	
+		// all tours
+		List<Tour> allTours = (ArrayList<Tour>) request.getAttribute("reqTours");
+		
 		// tours management results
 		List<Tour> displayTours = (ArrayList<Tour>) request.getAttribute("mgmtTours");
 		
@@ -17,7 +21,7 @@
 		
 		// sales management results
 		List<TourRecord> displaySalesTour = (ArrayList<TourRecord>) request.getAttribute("mgmtSalesTours");
-		List<TourRecord> displaySalesUser = (ArrayList<TourRecord>) request.getAttribute("mgmtSalesUsers");
+		List<User> displaySalesUser = (ArrayList<User>) request.getAttribute("mgmtSalesUsers");
 		
 		// user sales record
 		List<TourRecord> salesRecord = (ArrayList<TourRecord>) request.getAttribute("reqProfileRecords");
@@ -27,6 +31,7 @@
 			out.println("Tour ID: " + i.getTourid() + "<br>");
 			out.println("Tour Name: " + i.getTourName() + "<br>");
 			out.println("Slots: " + i.getSlotsAvailable() + "<br>");
+			out.println("Price: " + i.getPrice() + "<br>");
 			
 			if(i.getTotalSales() != 0){
 				out.println("Sales: " + i.getTotalSales() + "<br>");
@@ -71,13 +76,13 @@
 	}
 	
 	try{
-		for(TourRecord i : displaySalesUser){
+		for(User i : displaySalesUser){
 			out.println("User ID: " + i.getUserid() + "<br>");
 			out.println("Username: " +i.getUsername() + "<br>");
-			out.println("Tour ID: " + i.getTourid() + "<br>");
-			out.println("Tourname: " + i.getTourname() + "<br>");
-			out.println("Quantity: " + i.getQuantity() + "<br>");
-			out.println("Purcased at: " + i.getPurchased_at() + "<br>");
+			if (i.getPurchases() > 0) 
+				out.println("Purchases: " +i.getPurchases() + "<br>");
+			if (i.getValue() > 0) 
+				out.println("Total: " +i.getValue() + "<br>");
 			out.println("<br>---------------<br>");
 		}
 	} catch (Exception ex){
@@ -112,6 +117,33 @@
  	slot: <input type="text" name="adminFilterSlot">
  	<input type="submit">
  </form>
+ <h5>Tour Filter by price range</h5>
+ <form action="/assignment2_jad_client/admin_tours_filter" method="get">
+ 	Price From: <input type="text" name="adminFilterPriceF"><br>
+ 	Price To: <input type="text" name="adminFilterPriceT">
+ 	<input type="submit">
+ </form>
+ 
+ <h5>Disable Tours</h5>
+ <form action="/assignment2_jad_client/admin_tours_filter" method="POST">
+ 	Select Tour to disable
+ 	<select id="category" name="tourid_active" placeholder="Choose one">
+ 	<%
+ 		try {
+ 			for (Tour i : allTours){
+ 				out.println("<option value="+i.getTourid()+">"+i.getTourName()+"</option>");
+ 			}
+ 		} catch (Exception ex){
+ 			response.sendRedirect("test");
+ 		}
+ 	%>
+ 	</select>
+ 	<select id="category" name="tourid_option" placeholder="Choose one">
+ 		<option value="1">Enable</option>
+ 		<option value="0">Disable</option>
+ 	</select>
+ 	<input type="submit">
+ </form>
  
 <h2>User</h2>
 <h5>User Filters</h5>
@@ -133,11 +165,20 @@
  	<input type="submit">
  </form>
  
+ <h5>Book for customer</h5>
+ <form action="/assignment2_jad_client/admin_book" method="POST">
+ 	User: <input type="text" name="adminbook_userid">
+ 	Tour: <input type="text" name="adminbook_tourid">
+ 	Quantity: <input type="text" name="adminbook_quantity">
+ 	<input type="submit">
+ </form>
+ 
  <h2>Sales</h2>
  <h5>Sales Filters </h5>
  <form action="/assignment2_jad_client/admin_sales_filter" method="get">
- 	<select id="category" name="salesfilter" placeholder="Choose one">
- 	<option value="top">Top 10 users</option>
+ 	<select name="salesfilter" placeholder="Choose one">
+ 	<option value="topOrders">Top 10 users by Orders</option>
+ 	<option value="topValue">Top 10 users by Value</option>
  	</select><br>
  	<input type="submit">
  </form>

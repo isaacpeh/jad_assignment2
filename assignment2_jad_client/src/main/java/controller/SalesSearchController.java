@@ -71,21 +71,28 @@ public class SalesSearchController extends HttpServlet {
 		// ---------------------------------------------
 		// (2) Processing data
 		// ---------------------------------------------
-		if (salesFilter != null && salesFilter.equalsIgnoreCase("top")) {
-			userResult = trm.showTopUsers();
+		if (salesFilter != null && salesFilter.equalsIgnoreCase("topOrders")) {
+			// TOP 10 USERS BY ORDERS
+			userResult = trm.showTopUsersOrder();
 			request.setAttribute("mgmtSalesUsers", userResult);
-
+			
+		} else if (salesFilter != null && salesFilter.equalsIgnoreCase("topValue")) { 
+			// TOP 10 USERS BY VALUE
+			userResult = trm.showTopUsersValue();
+			request.setAttribute("mgmtSalesUsers", userResult);
+			
 		} else if (dateFrom != null && dateTo != null) {
+			// BOOK BETWEEN DATE RANGE
 			salesResult = trm.getRecordByDate(dateFrom, dateTo);
 			request.setAttribute("mgmtSalesTours", salesResult);
 			
 		} else if (salesTourid != -1) {
+			// USERS WHO BOOK CERTAIN TOUR
 			salesResult = trm.getUserByRecord(salesTourid);
 			request.setAttribute("mgmtSalesUsers", salesResult);
-
 		}
 
-		RequestDispatcher dispatcher = request.getRequestDispatcher("test.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("test");
 		dispatcher.forward(request, response);
 	}
 

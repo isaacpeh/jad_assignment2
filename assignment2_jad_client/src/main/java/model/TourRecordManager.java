@@ -46,8 +46,8 @@ public class TourRecordManager {
 		}
 	}
 	
-	// SHOW TOP 10 USERS
-	public List<User> showTopUsers() {
+	// SHOW TOP 10 USERS BY ORDERS
+	public List<User> showTopUsersOrder() {
 		Connection con = DatabaseConfig.getConn();
 		String sql = "SELECT "
 						+ "U.userid, "
@@ -85,6 +85,62 @@ public class TourRecordManager {
 				tempUser.setRole(rs.getString("role"));
 				tempUser.setAddress(rs.getString("address"));
 				tempUser.setPurchases(rs.getInt("purchases"));
+				result.add(tempUser);
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+
+		} finally {
+		    try { if (rs != null) rs.close(); } catch (Exception e) {};
+		    try { if (stmt != null) stmt.close(); } catch (Exception e) {};
+		    try { if (con != null) con.close(); } catch (Exception e) {};
+		}
+		return result;
+	}
+	
+	// SHOW TOP 10 USERS BY VALUE
+	public List<User> showTopUsersValue() {
+		Connection con = DatabaseConfig.getConn();
+		String sql = "SELECT "
+						+ "U.userid, "
+						+ "U.username, "
+						+ "U.email, "
+						+ "U.contact, "
+						+ "U.role, "
+						+ "U.address, "
+						+ "sum(T.price * O.quantity) AS total "
+					+ "FROM "
+						+ "user AS U, "
+						+ "order_history AS O, "
+						+ "tour AS T "
+					+ "WHERE "
+						+ "U.userid = O.userid AND "
+						+ "O.tourid = T.tourid "
+					+ "GROUP BY "
+						+ "username "
+					+ "ORDER BY "
+						+ "total DESC "
+					+ "LIMIT 10";
+
+		ResultSet rs = null; 
+		Statement stmt= null;
+		List<User> result = null;
+
+		try {
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(sql);
+			result = new ArrayList<>();
+
+			while (rs.next()) {
+				User tempUser = new User();
+				tempUser.setUserid(rs.getInt("userid"));
+				tempUser.setUsername(rs.getString("username"));
+				tempUser.setEmail(rs.getString("email"));
+				tempUser.setContact(rs.getString("contact"));
+				tempUser.setRole(rs.getString("role"));
+				tempUser.setAddress(rs.getString("address"));
+				tempUser.setValue(rs.getInt("total"));
 				result.add(tempUser);
 			}
 

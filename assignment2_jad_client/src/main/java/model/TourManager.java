@@ -35,7 +35,8 @@ public class TourManager {
 						+ "tour AS T , " 
 						+ "tour_img AS I " 
 					+ "WHERE "
-						+ "T.tourid = I.tourid ";
+						+ "T.tourid = I.tourid AND "
+						+ "T.active = 1";
 
 		Statement stmt = null;
 		ResultSet rs = null; 
@@ -149,6 +150,55 @@ public class TourManager {
 		} finally {
 		    try { if (rs != null) rs.close(); } catch (Exception e) {};
 		    try { if (stmt != null) stmt.close(); } catch (Exception e) {};
+		    try { if (con != null) con.close(); } catch (Exception e) {};
+		}
+		return result;
+	}
+	
+	// SHOW TOUR BY PRICE (TOURRECORDS)
+	public List<Tour> showToursPrice(int from, int to) {
+		Connection con = DatabaseConfig.getConn();
+		String sql = "SELECT DISTINCT "
+						+ "T.tourid, " 
+						+ "T.tourname, " 
+						+ "T.brief_description, " 
+						+ "T.detailed_description, " 
+						+ "T.price, "
+						+ "T.slots_available "
+					+ "FROM " 
+						+ "tour AS T " 
+					+ "WHERE "
+						+ "T.price >= ? AND "
+						+ "T.price <= ? "
+					+ "ORDER BY "
+						+ "T.price ASC";
+
+		ResultSet rs = null; 
+		PreparedStatement ps = null;
+		ArrayList<Tour> result = new ArrayList<Tour>();
+		
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, from);
+			ps.setInt(2, to);
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+				Tour tempTour = new Tour();
+				tempTour.setTourid(rs.getInt("tourid"));
+				tempTour.setTourName(rs.getString("tourname"));
+				tempTour.setbDescription(rs.getString("brief_description"));
+				tempTour.setdDescription(rs.getString("detailed_description"));
+				tempTour.setPrice(rs.getDouble("price"));
+				tempTour.setSlotsAvailable(rs.getInt("slots_available"));
+				result.add(tempTour);
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+
+		} finally {
+		    try { if (rs != null) rs.close(); } catch (Exception e) {};
+		    try { if (ps != null) ps.close(); } catch (Exception e) {};
 		    try { if (con != null) con.close(); } catch (Exception e) {};
 		}
 		return result;
@@ -313,7 +363,8 @@ public class TourManager {
 					+ "WHERE "
 						+ "T.tourid = I.tourid AND "
 						+ "T.tourid = C.tourid AND " 
-						+ "C.categoryid = ? ";
+						+ "C.categoryid = ? AND "
+						+ "T.active = 1";
 
 		ResultSet rs = null;
 		PreparedStatement ps = null;
@@ -382,6 +433,7 @@ public class TourManager {
 		return result;
 	}
 	
+	// SHOW TOUR BY TOURID
 	// SHOW ONE TOUR
 	public Tour showTour(int tourid) {
 		Connection con = DatabaseConfig.getConn();
@@ -390,7 +442,8 @@ public class TourManager {
 					+ "FROM "
 						+ "tour "
 					+ "WHERE "
-						+ "tourid = ?";
+						+ "tourid = ? AND "
+						+ "active = 1";
 		PreparedStatement ps = null;
 		Tour tempTour = null;
 		ResultSet rs = null;
@@ -421,6 +474,7 @@ public class TourManager {
 
 	}
 
+	// SHOW TOUR BY FILTER
 	// SHOW TOUR BY FILTER ONLY
 	public List<Tour> showToursFilter(String key) {
 		Connection con = DatabaseConfig.getConn();
@@ -437,7 +491,8 @@ public class TourManager {
 						+ "tour_img AS I " 
 					+ "WHERE "
 						+ "T.tourid = I.tourid AND "
-						+ "tourname LIKE N? ";
+						+ "tourname LIKE N? AND "
+						+ "T.active = 1";
 		
 		ResultSet rs = null; 
 		PreparedStatement ps = null;
@@ -506,6 +561,7 @@ public class TourManager {
 		return result;
 	}
 
+	// SHOW TOUR BY FILTER AND CATEGORY
 	// SHOW TOUR BY CATEGORY AND FILTER
 	public List<Tour> showToursBoth(int catid, String key) {
 			Connection con = DatabaseConfig.getConn();
@@ -525,7 +581,8 @@ public class TourManager {
 							+ "T.tourid = I.tourid AND "
 							+ "T.tourid = C.tourid AND " 
 							+ "tourname LIKE N? AND "
-							+ "C.categoryid = ? ";
+							+ "C.categoryid = ? AND "
+							+ "T.active = 1";
 			
 			ResultSet rs = null; 
 			PreparedStatement ps = null;
@@ -596,6 +653,7 @@ public class TourManager {
 			return result;
 		}
 	
+	// ADD NEW TOUR
 	// ADD TOUR
 	public int addTour(Tour tour) {
 		Connection con = DatabaseConfig.getConn();
@@ -639,6 +697,7 @@ public class TourManager {
 		}
 	}
 
+	// ADD IMAGE
 	// ADD TOUR IMAGES
 	public int[] addTourImg(int tourid, String[] img_url) {
 		Connection con = DatabaseConfig.getConn();
@@ -680,6 +739,7 @@ public class TourManager {
 		}
 	}
 
+	// ADD TOUR TO CATEGORY
 	// ADD TOUR CATEGORY
 	public int[] addTourCat(int tourid, int[] categories) {
 		Connection con = DatabaseConfig.getConn();
@@ -722,6 +782,7 @@ public class TourManager {
 	}
 
 	// DELETE TOUR
+	// DELETE TOUR
 	public int deleteTour(int tourid) {
 		Connection con = DatabaseConfig.getConn();
 		String sql = "DELETE FROM "
@@ -747,6 +808,7 @@ public class TourManager {
 
 	}
 	
+	// UPDATE TOUR
 	// UPDATE TOUR
 	public int updateTour(int tourid, Tour tour) {
 		Connection con = DatabaseConfig.getConn();
@@ -789,6 +851,37 @@ public class TourManager {
 		}
 	}
 
+	// UPDATE TOUR IS ACTIVE
+	// UPDATE TOUR ACTIVE
+	public int updateActive(int tourid, int active) {
+		Connection con = DatabaseConfig.getConn();
+		String sql = "UPDATE "
+						+ "tour "
+					+ "SET "
+						+ "active = ? "
+					+ "WHERE "
+						+ "tourid = ?";
+		
+		PreparedStatement ps = null;
+		int result = -1;
+		
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, active);
+			ps.setInt(2, tourid);
+			result = ps.executeUpdate();
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+
+		} finally {
+		    try { if (ps != null) ps.close(); } catch (Exception e) {};
+		    try { if (con != null) con.close(); } catch (Exception e) {};
+		}
+		return result;
+	}
+
+	// DELETE TOUR IMG
 	// DELETE TOUR IMG
 	public int deleteTourImg(int tourid) {
 		Connection con = DatabaseConfig.getConn();
@@ -814,6 +907,7 @@ public class TourManager {
 		}
 	}
 	
+	// DELETE TOUR FROM CATEGORY
 	// DELETE TOUR CATEGORY
 	public int deleteTourCat(int tourid) {
 		Connection con = DatabaseConfig.getConn();

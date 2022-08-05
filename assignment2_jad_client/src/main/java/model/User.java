@@ -18,6 +18,7 @@ public class User {
 	private int userid;
 	private String address;
 	private int purchases;
+	private double value;
 	private String last_logged_in;
 
 
@@ -112,5 +113,13 @@ public class User {
 
 	public void setLast_logged_in(String last_logged_in) {
 		this.last_logged_in = last_logged_in;
+	}
+
+	public double getValue() {
+		return value;
+	}
+
+	public void setValue(double value) {
+		this.value = value;
 	}
 }

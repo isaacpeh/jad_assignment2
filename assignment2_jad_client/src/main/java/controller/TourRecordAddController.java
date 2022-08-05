@@ -17,7 +17,7 @@ import model.TourRecordManager;
 /**
  * Servlet implementation class TourRecordAddController
  */
-@WebServlet("/TourRecordAddController")
+@WebServlet(urlPatterns = { "/TourRecordAddController", "/admin_book" })
 public class TourRecordAddController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -49,14 +49,56 @@ public class TourRecordAddController extends HttpServlet {
 		// cart.add(new Cart(7, 1));
 		// cart.add(new Cart(4, 1));
 		// SIMULATION END
-
+		
 		List<Cart> cart = (ArrayList<Cart>) request.getSession().getAttribute("shoppingCart");
 		List<TourRecord> list = new ArrayList<TourRecord>();
 		TourRecordManager trm = new TourRecordManager();
 
 		int tourID = 0;
-		int userID = 5;
+		int userID = 0;
 		int qty = 0;
+		
+		String source = "checkout.jsp";
+		if (request.getRequestURI().contains("admin_book")) {
+
+			source = "test";
+			// source = "admin_user.jsp"
+			int userid = -1;
+			int tourid = -1;
+			int quantity = -1;
+			try {
+				userid = Integer.parseInt(request.getParameter("adminbook_userid"));
+				tourid = Integer.parseInt(request.getParameter("adminbook_tourid"));
+				quantity = Integer.parseInt(request.getParameter("adminbook_quantity"));
+				
+				if (quantity <= 0) {
+					response.sendRedirect(source + "?errCode=quantityError");
+					return;
+				}
+
+			} catch (NumberFormatException ex) {
+				ex.printStackTrace();
+				response.sendRedirect(source + "?errCode=invalidNumberFormat");
+				return;
+			} catch (Exception ex) {
+
+			}
+
+			TourRecord newTour = new TourRecord(userid, tourid, quantity);
+			list.add(newTour);
+			int[] result = trm.addRecord(list);
+
+			if (result[0] != -1) {
+				response.sendRedirect(source + "?message=succesfullyBooked");
+				System.out.println(source + "?message=succesfullyBooked");
+				return;
+
+			} else {
+				// response.sendRedirect("checkout.jsp?errCode=failedTransaction")
+				System.out.println(source + "?errCode=failedBooking");
+				return;
+			}
+		}
 
 		if (cart == null || cart.size() == 0) {
 			// response.sendRedirect("checkout.jsp?errCode=cartEmpty")
@@ -64,7 +106,6 @@ public class TourRecordAddController extends HttpServlet {
 			return;
 		}
 
-		
 		/* --------------------------------------------
 		 * 2. Validate data
 		 * -------------------------------------------- */
@@ -79,18 +120,18 @@ public class TourRecordAddController extends HttpServlet {
 
 			} catch (NumberFormatException ex) {
 				// response.sendRedirect("checkout.jsp?errCode=invalidParameters")
-				System.out.println("checkout.jsp?errCode=invalidParameters");
+				System.out.println(source + "?errCode=invalidParameters");
 				return;
 			} catch (Exception ex) {
 				// response.sendRedirect("checkout.jsp?errCode=error")
-				System.out.println("checkout.jsp?errCode=error\nError: " + ex);
+				System.out.println(source + "?errCode=error\nError: " + ex);
 				return;
 			}
 		}
 
 		if (list == null || list.size() == 0) {
 			// response.sendRedirect("checkout.jsp?errCode=unfilledParameters")
-			System.out.println("checkout.jsp?errCode=unfilledParameters");
+			System.out.println(source + "?errCode=unfilledParameters");
 			return;
 		}
 
@@ -106,7 +147,7 @@ public class TourRecordAddController extends HttpServlet {
 
 		} else {
 			// response.sendRedirect("checkout.jsp?errCode=failedTransaction")
-			System.out.println("checkout.jsp?errCode=failedTransaction");
+			System.out.println(source + "?errCode=failedTransaction");
 			return;
 		}
 	}

@@ -33,7 +33,8 @@ public class TourDAO {
 						+ "tour AS T , " 
 						+ "tour_img AS I " 
 					+ "WHERE "
-						+ "T.tourid = I.tourid ";
+						+ "T.tourid = I.tourid AND "
+						+ "T.active = 1";
 
 		Statement stmt = null;
 		ResultSet rs = null; 
@@ -122,7 +123,8 @@ public class TourDAO {
 						+ "T.tourid = I.tourid AND "
 						+ "T.tourid = TC.tourid AND " 
 						+ "TC.categoryid = C.categoryid AND "
-						+ "TC.categoryid = ? ";
+						+ "TC.categoryid = ? AND "
+						+ "T.active = 1";
 
 		ResultSet rs = null;
 		PreparedStatement ps = null;
@@ -201,7 +203,8 @@ public class TourDAO {
 					+ "FROM "
 						+ "tour "
 					+ "WHERE "
-						+ "tourid = ?";
+						+ "tourid = ? AND "
+						+ "T.active = 1";
 		PreparedStatement ps = null;
 		Tour tempTour = null;
 		ResultSet rs = null;
@@ -232,7 +235,7 @@ public class TourDAO {
 
 	}
 	
-	// UPDATE TOUR
+	// UPDATE TOUR SLOTS
 	public int updateTour(int tourid, int slots) {
 		Connection con = DatabaseConfig.getConn();
 		String sql = "UPDATE "
