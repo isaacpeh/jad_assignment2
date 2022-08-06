@@ -37,8 +37,12 @@ public class CartDeleteController extends HttpServlet {
 		String[] deleteItems = request.getParameterValues("deleteItems");
 		ArrayList<Integer> toBeRemoved= new ArrayList<>();
 		session.removeAttribute("sessCart");
+
+		if (deleteItems == null || deleteItems.length == 0) {
+			response.sendRedirect("cart.jsp?errCode=noSelectedItems");
+			return;
+		}
 		
-		System.out.println(request.getSession().getAttribute("sessCart")+"-------------------");
 		for(int i = sessCart.size()-1; i >= 0; i--) {
 			int sessionId = sessCart.get(i).getTourId();
 			for(int j = 0; j < deleteItems.length; j++) {
@@ -48,15 +52,13 @@ public class CartDeleteController extends HttpServlet {
 				}
 			}
 		}
+
 		if(sessCart.isEmpty()) {
 			sessCart=null;
 		}
 		
 		session.setAttribute("sessCart", sessCart);
 		response.sendRedirect("cart.jsp");
-		
-		// TODO Auto-generated method stub	
-		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**

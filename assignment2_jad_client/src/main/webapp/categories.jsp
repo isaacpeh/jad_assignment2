@@ -59,7 +59,7 @@
 					<p><%=i.getDescription()%></p>
 				</div>
 				<div class="card__footer content m-0">
-					<a href="tours?catid=<%=i.getCatID()%>"
+					<a href="tours?catid=<%=i.getCatID()%>&key="
 						class="btn u-pull-right mr-2 bg-info text-white">Learn More</a>
 				</div>
 			</div>

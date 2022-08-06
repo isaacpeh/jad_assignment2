@@ -61,16 +61,41 @@ public class Pay extends HttpServlet {
 
 			// Here is where i send the request to order history upon success
 			TourRecordManager trm = new TourRecordManager();
-			List<Cart> sessCart = (ArrayList<Cart>) request.getSession().getAttribute("sessCart");
-			int userid = (int) request.getSession().getAttribute("sessUserID");
-
-			trm.addRecord(sessCart, userid);
-			response.sendRedirect(request.getContextPath() + "/paymentSuccess.jsp");
-
-			// Save cart to database with the id along with it
+			int userid = -1;
+			List<Cart> sessCart = null;
+			try {
+				sessCart = (ArrayList<Cart>) request.getSession().getAttribute("sessCart");
+				userid = (int) request.getSession().getAttribute("sessUserID");
+			} catch (Exception ex) {
+				response.sendRedirect(request.getContextPath() + "/paymentCancel.jsp?errCode=missingValues");
+				return;
+			}
+			
+			if (userid == -1) {
+				response.sendRedirect(request.getContextPath() + "/login.jsp?errCode=userNotFound");
+				return;
+			}
+			if (sessCart.size() <= 0) {
+				response.sendRedirect(request.getContextPath() + "/paymentCancel.jsp?errCode=cartEmpty");
+				return;
+			}
+			
+			int result[] = trm.addRecord(sessCart, userid);
+			if (result != null && (result.length == sessCart.size())) {
+				response.sendRedirect(request.getContextPath() + "/paymentSuccess.jsp");
+				return;
+			} else {
+				response.sendRedirect(request.getContextPath() + "/paymentCancel.jsp?errCode=failedRecords");
+				return;
+			}
 		} catch (StripeException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			response.sendRedirect(request.getContextPath() + "/paymentCancel.jsp?errCode=stripeError");
+			return;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			response.sendRedirect(request.getContextPath() + "/paymentCancel.jsp?errCode=unknownError");
+			return;
 		}
 	}
 
