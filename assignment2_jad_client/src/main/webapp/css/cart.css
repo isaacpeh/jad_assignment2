@@ -1,0 +1,37 @@
+@charset "UTF-8";
+
+.subtotal, .branding, .namePrice {
+	display: flex;
+	justify-content: space-between;
+}
+.namePrice{
+	width:100%;
+	justify-content: space-between;
+}
+
+.creditCards {
+	display: flex;
+	justify-content: space-evenly;
+}
+
+.cartItems h1 {
+	text-decoration: underline;
+}
+
+.cartItem img {
+	height: 10rem;
+	width: 10rem;
+	object-fit: cover;
+}
+
+.cartItem {
+	display: flex;
+}
+
+.cartItems {
+	max-height: 100vh;
+}
+
+.itemDetails {
+	overflow: hidden;
+}

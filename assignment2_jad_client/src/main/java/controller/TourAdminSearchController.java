@@ -54,21 +54,19 @@ public class TourAdminSearchController extends HttpServlet {
 		/* --------------------------------------------
 		 * 1. Pull data
 		 * -------------------------------------------- */
-		
 		adminFilter = request.getParameter("adminfilter");
 
 		/* --------------------------------------------
 		 * 2. Validate data
 		 * -------------------------------------------- */
-		
 		try {
 			adminFilter_slot = Integer.parseInt(request.getParameter("adminFilterSlot").trim());
 		} catch (NumberFormatException ex) {
-			System.out.println("slotNumberError");
-			response.sendRedirect("test?errCode=slotNumberError");
+			response.sendRedirect("admin_tours.jsp?errCode=slotNumberError");
 			return;
 		} catch (Exception ex) {
-
+			response.sendRedirect("admin_tours.jsp?errCode=slotNumberError");
+			return;
 		}
 
 		try {
@@ -76,8 +74,7 @@ public class TourAdminSearchController extends HttpServlet {
 			adminFilter_priceT = Integer.parseInt(request.getParameter("adminFilterPriceT").trim());
 
 		} catch (NumberFormatException ex) {
-			System.out.println("priceNumberError");
-			response.sendRedirect("test?errCode=priceNumberError");
+			response.sendRedirect("admin_tours.jsp?errCode=priceNumberError");
 			return;
 
 		} catch (Exception ex) {
@@ -108,12 +105,12 @@ public class TourAdminSearchController extends HttpServlet {
 			result = tm.showToursNew();
 
 		} else {
-			response.sendRedirect("test?errCode=noFilter");
+			response.sendRedirect("admin_tours.jsp?errCode=noFilter");
 			return;
 		}
 
 		request.setAttribute("mgmtTours", result);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("test");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("admin_tours.jsp");
 		dispatcher.forward(request, response);
 	}
 
@@ -129,7 +126,7 @@ public class TourAdminSearchController extends HttpServlet {
 			tourid_option = Integer.parseInt(request.getParameter("tour_isActive").trim());
 		} catch (NumberFormatException ex) {
 			System.out.println("tourActiveError");
-			response.sendRedirect("test?errCode=tourActiveError");
+			response.sendRedirect("admin_tours.jsp?errCode=tourActiveError");
 			return;
 		} catch (Exception ex) {
 
@@ -140,10 +137,10 @@ public class TourAdminSearchController extends HttpServlet {
 			int affectedRows = tm.updateActive(tourid_active, tourid_option);
 
 			if (affectedRows == 1) {
-				response.sendRedirect("test?message=successfullyUpdated");
+				response.sendRedirect("admin_tours.jsp?message=successfullyUpdated");
 				return;
 			} else {
-				response.sendRedirect("test?errCode=unsuccessfulUpdate");
+				response.sendRedirect("admin_tours.jsp?errCode=unsuccessfulUpdate");
 				return;
 			}
 		}

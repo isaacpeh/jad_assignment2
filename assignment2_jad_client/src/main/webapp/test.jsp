@@ -65,6 +65,7 @@
 	
 	try{
 		for(TourRecord i : displaySalesTour){
+			// USERS WHO PURCHASED CERTAIN TOUR
 			if (i.getTourname() != null)
 				out.println("Tour Name: " + i.getTourname() + "<br>");
 			if (i.getUsername() != null)
@@ -74,6 +75,7 @@
 			if (i.getPurchased_at() != null)
 				out.println("Date of Purchase: " + i.getPurchased_at() + "<br>");
 			
+			// TOP SELLING CATEGORY
 			if (i.getCategoryid() > 0)
 				out.println("Category ID: " + i.getCategoryid() + "<br>");
 			if (i.getCategory() != null)
@@ -89,7 +91,7 @@
 	}
 	
 	try{
-		for(User i : displaySalesUser){
+		for(User i : displaySalesUser){ // DISPLAY TOP 10 USERS BY VALUE AND QUANTITY
 			out.println("User ID: " + i.getUserid() + "<br>");
 			out.println("Username: " +i.getUsername() + "<br>");
 			if (i.getPurchases() > 0) 
@@ -192,6 +194,7 @@
  	<select name="salesfilter" placeholder="Choose one">
  	<option value="topOrders">Top 10 users by Orders</option>
  	<option value="topValue">Top 10 users by Value</option>
+ 	<option value="byTour">Order By Tour ASC</option>
  	<option value="topCategory">Best and least selling categories</option>
  	</select><br>
  	<input type="submit">

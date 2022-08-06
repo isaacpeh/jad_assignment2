@@ -36,8 +36,7 @@
 <body>
 	<%@ page import="java.util.*" %>
 		
-		
-		<%-- Header --%>
+	<%-- Header --%>
 	<div class="header header-fixed unselectable header-animated">
 		<div class="header-brand">
 			<div class="nav-item no-hover">

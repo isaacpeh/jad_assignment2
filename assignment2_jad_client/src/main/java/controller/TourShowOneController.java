@@ -48,13 +48,11 @@ public class TourShowOneController extends HttpServlet {
 		int tourid = 0;
 		try {
 			tourid = Integer.parseInt(request.getParameter("tourid"));
-			System.out.println(tourid);
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 
-		System.out.println("Tour ID: " + tourid);
 		/* --------------------------------------------
 		 * 2. Validate data
 		 * -------------------------------------------- */

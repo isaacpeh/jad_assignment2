@@ -460,6 +460,7 @@ public class TourManager {
 				tempTour.setdDescription(rs.getString("detailed_description"));
 				tempTour.setPrice(rs.getDouble("price"));
 				tempTour.setSlotsAvailable(rs.getInt("slots_available"));
+				tempTour.setTourid(rs.getInt("tourid"));
 			}
 
 		} catch (SQLException ex) {

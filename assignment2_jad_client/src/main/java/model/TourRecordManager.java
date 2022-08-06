@@ -355,9 +355,107 @@ public class TourRecordManager {
 		}
 		return result;
 	}
+	
+	// SHOW ALL TOUR RECORDS
+	public List<TourRecord> showAllRecords(){
+		Connection con = DatabaseConfig.getConn();
+		String sql = "SELECT "
+						+ "U.userid, "
+						+ "U.username, "
+						+ "T.tourid, "
+						+ "T.tourname, "
+						+ "O.quantity, "
+						+ "O.purchased_at "
+					+ "FROM "
+						+ "tour AS T, "
+						+ "user AS U, "
+						+ "order_history AS O "
+					+ "WHERE "
+						+ "U.userid = O.userid AND "
+						+ "T.tourid = O.tourid "
+					+ "ORDER BY "
+						+ "O.purchased_at DESC";
+		
+		ResultSet rs = null; 
+		Statement stmt= null;
+		List<TourRecord> result = null;
 
-	// SHOW TOUR RECORDS BY CATEGORY ASC
+		try {
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(sql);
+			result = new ArrayList<>();
+
+			while (rs.next()) {
+				TourRecord tempRecord = new TourRecord();
+				tempRecord.setUserid(rs.getInt("userid"));
+				tempRecord.setUsername(rs.getString("username"));
+				tempRecord.setTourid(rs.getInt("tourid"));
+				tempRecord.setTourname(rs.getString("tourname"));
+				tempRecord.setQuantity(rs.getInt("quantity"));
+				tempRecord.setPurchased_at(rs.getString("purchased_at"));
+				result.add(tempRecord);
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+
+		} finally {
+		    try { if (rs != null) rs.close(); } catch (Exception e) {};
+		    try { if (stmt != null) stmt.close(); } catch (Exception e) {};
+		    try { if (con != null) con.close(); } catch (Exception e) {};
+		}
+		return result;
+	}
+	
 	// SHOW TOUR RECORDS BY TOUR ASC
-	// SHOW TOUR RECORD BY INDIVIDUAL TOUR SAME AS USER WHO BOOK ... ? MAYBE
-	// COMBINE?
+	public List<TourRecord> getRecordByTour() {
+		Connection con = DatabaseConfig.getConn();
+		String sql = "SELECT "
+						+ "U.userid, "
+						+ "U.username, "
+						+ "T.tourid, "
+						+ "T.tourname, "
+						+ "O.quantity, "
+						+ "O.purchased_at "
+					+ "FROM "
+						+ "tour AS T, "
+						+ "user AS U, "
+						+ "order_history AS O "
+					+ "WHERE "
+						+ "U.userid = O.userid AND "
+						+ "T.tourid = O.tourid "
+					+ "ORDER BY "
+						+ "T.tourname ASC";
+		
+		ResultSet rs = null; 
+		Statement stmt= null;
+		List<TourRecord> result = null;
+
+		try {
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(sql);
+			result = new ArrayList<>();
+
+			while (rs.next()) {
+				TourRecord tempRecord = new TourRecord();
+				tempRecord.setUserid(rs.getInt("userid"));
+				tempRecord.setUsername(rs.getString("username"));
+				tempRecord.setTourid(rs.getInt("tourid"));
+				tempRecord.setTourname(rs.getString("tourname"));
+				tempRecord.setQuantity(rs.getInt("quantity"));
+				tempRecord.setPurchased_at(rs.getString("purchased_at"));
+				result.add(tempRecord);
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+
+		} finally {
+		    try { if (rs != null) rs.close(); } catch (Exception e) {};
+		    try { if (stmt != null) stmt.close(); } catch (Exception e) {};
+		    try { if (con != null) con.close(); } catch (Exception e) {};
+		}
+		return result;
+	}
+
 }

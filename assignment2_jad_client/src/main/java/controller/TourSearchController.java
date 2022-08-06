@@ -25,7 +25,7 @@ import model.TourManager;
 /**
  * Servlet implementation class TourShowBothController
  */
-@WebServlet(urlPatterns = { "/tours", "/admin_tours", "/test" })
+@WebServlet(urlPatterns = { "/tours", "/admin_tours" })
 public class TourSearchController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -44,8 +44,7 @@ public class TourSearchController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
-		// String source = "tours.jsp";
-		String source = "test.jsp";
+		String source = "tours.jsp";
 		if (request.getRequestURI().contains("admin_tours")) {
 			source = "admin_category";
 		}

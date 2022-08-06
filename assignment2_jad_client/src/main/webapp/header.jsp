@@ -66,6 +66,11 @@
 				%>
 							<div class="nav-right">
 								<div class="nav-item text-center">
+									<a href="cart.jsp"> <i class="fa fa-shopping-cart" aria-hidden="true"
+										style="font-size: 20px"></i>
+									</a>
+								</div>
+								<div class="nav-item text-center">
 									<a href="profile.jsp"> <i class="fa fa-user-circle-o"
 										style="font-size: 20px"></i>
 									</a>

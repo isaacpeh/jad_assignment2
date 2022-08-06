@@ -1,19 +1,39 @@
 package model;
 
 public class Cart {
-	private int tourid;
+	private String tourName;
+	private double price;
+	private double totalPrice;
+	private String picUrl;
 	private int quantity;
+	private int tourId;
 
 	public Cart() {
 
 	}
 
-	public int getTourid() {
-		return tourid;
+	public String getTourName() {
+		return tourName;
 	}
 
-	public void setTourid(int tourid) {
-		this.tourid = tourid;
+	public void setTourName(String tourName) {
+		this.tourName = tourName;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+	public String getPicUrl() {
+		return picUrl;
+	}
+
+	public void setPicUrl(String picUrl) {
+		this.picUrl = picUrl;
 	}
 
 	public int getQuantity() {
@@ -24,9 +44,24 @@ public class Cart {
 		this.quantity = quantity;
 	}
 
-	public Cart(int tourid, int quantity) {
-		this.tourid = tourid;
-		this.quantity = quantity;
+	public int getTourId() {
+		return tourId;
 	}
 
+	public void setTourId(int tourId) {
+		this.tourId = tourId;
+	}
+
+	public double getTotalPrice() {
+		totalPrice = price * quantity;
+		return totalPrice;
+	}
+
+	public void addQuantity() {
+		quantity += 1;
+	}
+
+	public void minusQuantity() {
+		quantity -= 1;
+	}
 }

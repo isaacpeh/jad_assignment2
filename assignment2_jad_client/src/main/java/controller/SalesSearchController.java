@@ -52,20 +52,23 @@ public class SalesSearchController extends HttpServlet {
 		try {
 			salesFilter = request.getParameter("salesfilter").trim();
 		} catch (Exception ex) {
-			// input error here
+
 		}
 		
 		try {
 			dateFrom = request.getParameter("dateFrom").trim() + " 00:00:00";
 			dateTo = request.getParameter("dateTo").trim() + " 23:59:59";
 		} catch (Exception ex) {
-			// input error here
+
 		}
 		
 		try {
 			salesTourid = Integer.parseInt(request.getParameter("salesTourid").trim());
+		} catch (NumberFormatException ex) {
+			response.sendRedirect("admin_sales.jsp?errCode=touridNumberError");
+			return;
 		} catch (Exception ex) {
-			// input error here
+
 		}
 		
 		// ---------------------------------------------
@@ -86,6 +89,11 @@ public class SalesSearchController extends HttpServlet {
 			salesResult = trm.showBestCategories();
 			request.setAttribute("mgmtSalesTours", salesResult);
 
+		} else if (salesFilter != null && salesFilter.equalsIgnoreCase("byTour")) {
+			// BEST AND LEAST SELLING CATEGORY BY PURCHASES
+			salesResult = trm.getRecordByTour();
+			request.setAttribute("mgmtSalesTours", salesResult);
+
 		} else if (dateFrom != null && dateTo != null) {
 			// BOOK BETWEEN DATE RANGE
 			salesResult = trm.getRecordByDate(dateFrom, dateTo);
@@ -94,10 +102,15 @@ public class SalesSearchController extends HttpServlet {
 		} else if (salesTourid != -1) {
 			// USERS WHO BOOK CERTAIN TOUR
 			salesResult = trm.getUserByRecord(salesTourid);
-			request.setAttribute("mgmtSalesUsers", salesResult);
+			request.setAttribute("mgmtSalesTours", salesResult);
+
+		} else {
+			// SHOW ALL TOUR RECORDS
+			salesResult = trm.showAllRecords();
+			request.setAttribute("mgmtSalesTours", salesResult);
 		}
 
-		RequestDispatcher dispatcher = request.getRequestDispatcher("test");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("admin_sales.jsp");
 		dispatcher.forward(request, response);
 	}
 

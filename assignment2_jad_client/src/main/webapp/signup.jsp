@@ -44,6 +44,10 @@
 					<div class="row level">
 						<input type="tel" name="new_contact" required />
 					</div>
+					<h6 class="m-0">Address</h6>
+					<div class="row level">
+						<input type="text" name="new_address" required />
+					</div>
 					<h6 class="m-0">Password</h6>
 					<div class="row level">
 						<input type="password" name="new_password" required />

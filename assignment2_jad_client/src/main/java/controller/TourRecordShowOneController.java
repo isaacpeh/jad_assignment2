@@ -65,7 +65,7 @@ public class TourRecordShowOneController extends HttpServlet {
 
 		} else {
 			request.setAttribute("reqProfileRecords", result);
-			RequestDispatcher dispatcher = request.getRequestDispatcher("test.jsp");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("customer_history.jsp");
 			dispatcher.forward(request, response);
 		}
 	}

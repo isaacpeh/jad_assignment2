@@ -26,19 +26,23 @@
 	<%@ include file="header.jsp"%>
 	
 	<%
-	Tour tour = (Tour) request.getAttribute("reqTour");
+	Tour tour = (Tour)request.getAttribute("reqTour");
+	int tourid = 0;
 	String tourname = "", tourdSummary = "", tourbSummary = "";
 	double tourPrice = 0;
 	int slotsAvailable = 0;
-
+	System.out.println(tour.getTourid());
 	try {
 		tourname = tour.getTourName();
 		tourdSummary = tour.getdDescription();
 		tourbSummary = tour.getdDescription();
 		tourPrice = tour.getPrice();
 		slotsAvailable = tour.getSlotsAvailable();
+		tourid = tour.getTourid();
+		
 	} catch (Exception ex) {
-		response.sendRedirect("TourShowOneController");
+		response.sendRedirect("tours.jsp?errCode=errorGettingTour");
+		return;
 	}
 	%>
 
@@ -92,8 +96,16 @@
 				<div class="enrollment">
 					<p>If all is good and wish to enroll, you can do so by clicking
 						the button below!</p>
-					<button class="bg-info text-white u-center">Enroll</button>
-				</div>
+					<div class="row" style="justify-content:space-between">
+					
+						
+					<div class="col-12">
+						<a href="CartAddController?tourid=<%=tourid %>">
+							<button class="btn-link" >Add to cart</button>
+						</a>
+					</div>
+					</div>
+			</div>
 			</div>
 		</div>
 	</div>

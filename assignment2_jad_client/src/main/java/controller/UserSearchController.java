@@ -88,7 +88,7 @@ public class UserSearchController extends HttpServlet {
 		}
 		
 		request.setAttribute("mgmtUsers", result);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("test.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("admin_user.jsp");
 		dispatcher.forward(request, response);
 
 	}

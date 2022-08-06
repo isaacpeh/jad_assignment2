@@ -34,6 +34,9 @@ import model.UserManager;
 		"/admin_tours", 
 		"/admin_tours.jsp", 
 		"/admin_category",
+		"/admin_sales_filter",
+		"/admin_tours_filter",
+		"/admin_book",
 		"/UserDeleteController",
 		"/TourAddController",
 		"/TourDeleteController",
@@ -95,8 +98,7 @@ public class AdminFilter extends HttpFilter implements Filter {
 		 * 3. Process request
 		 * -------------------------------------------- */
 		User result = um.showUser(loggedInUser);
-
-		if (result == null || !result.getRole().equals("Admin")) {
+		if (result == null || !result.getRole().equalsIgnoreCase("Admin")) {
 			System.out.println("Unauthorized user id: " + loggedInUser);
 			System.out.println("----------------- Filter End -----------------");
 			httpServletResponse.sendRedirect("index.jsp");
