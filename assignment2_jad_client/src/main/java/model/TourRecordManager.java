@@ -13,7 +13,7 @@ import controller.DatabaseConfig;
 public class TourRecordManager {
 	
 	// INSERT BOOKING RECORD
-	public int[] addRecord(List<TourRecord> tourRecord) {
+	public int[] addRecord(List<Cart> cart, int userid) {
 		Connection con = DatabaseConfig.getConn();
 		String sql = "INSERT INTO "
 						+ "order_history (userid, tourid, quantity) "
@@ -24,10 +24,10 @@ public class TourRecordManager {
 		try {
 			con.setAutoCommit(false);
 			ps = con.prepareStatement(sql);
-			for (int i = 0; i < tourRecord.size(); i++) {
-				ps.setInt(1, tourRecord.get(i).getUserid());
-				ps.setInt(2, tourRecord.get(i).getTourid());
-				ps.setInt(3, tourRecord.get(i).getQuantity());
+			for (int i = 0; i < cart.size(); i++) {
+				ps.setInt(1, userid);
+				ps.setInt(2, cart.get(i).getTourId());
+				ps.setInt(3, cart.get(i).getQuantity());
 				ps.addBatch();
 			}
 			int result[] = ps.executeBatch();

@@ -2,6 +2,8 @@ package StripePayment;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
+
+import model.Cart;
+import model.TourRecordManager;
 
 /**
  * Servlet implementation class Pay
@@ -55,7 +60,11 @@ public class Pay extends HttpServlet {
 			out.println("payment status: " + paymentStatus);
 
 			// Here is where i send the request to order history upon success
+			TourRecordManager trm = new TourRecordManager();
+			List<Cart> sessCart = (ArrayList<Cart>) request.getSession().getAttribute("sessCart");
+			int userid = (int) request.getSession().getAttribute("sessUserID");
 
+			trm.addRecord(sessCart, userid);
 			response.sendRedirect(request.getContextPath() + "/paymentSuccess.jsp");
 
 			// Save cart to database with the id along with it
