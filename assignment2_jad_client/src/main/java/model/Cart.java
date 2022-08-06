@@ -2,12 +2,10 @@ package model;
 
 import java.util.List;
 
-public class Cart {
+public class Cart{
 	private String tourName;
 	private double price;
 	private double totalPrice;
-	
-
 	private String picUrl;
 	private int quantity;
 	private int tourId;
@@ -60,5 +58,10 @@ public class Cart {
 		totalPrice = price*quantity;
 		return totalPrice;
 	}
-	
+	public void addQuantity() {
+		quantity+=1;
+	}
+	public void minusQuantity() {
+		quantity-=1;
+	}
 }
