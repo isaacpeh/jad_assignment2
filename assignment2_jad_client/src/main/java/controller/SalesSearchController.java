@@ -81,6 +81,11 @@ public class SalesSearchController extends HttpServlet {
 			userResult = trm.showTopUsersValue();
 			request.setAttribute("mgmtSalesUsers", userResult);
 			
+		} else if (salesFilter != null && salesFilter.equalsIgnoreCase("topCategory")) {
+			// BEST AND LEAST SELLING CATEGORY BY PURCHASES
+			salesResult = trm.showBestCategories();
+			request.setAttribute("mgmtSalesTours", salesResult);
+
 		} else if (dateFrom != null && dateTo != null) {
 			// BOOK BETWEEN DATE RANGE
 			salesResult = trm.getRecordByDate(dateFrom, dateTo);

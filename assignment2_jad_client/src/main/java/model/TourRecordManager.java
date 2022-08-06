@@ -210,7 +210,7 @@ public class TourRecordManager {
 		return result;
 	}
 
-	// GET USER BY BOOKING RECORD
+	// GET USER BY BOOKING RECORD (USERS WHO BOOK CERTAIN TOURS)
 	public List<TourRecord> getUserByRecord(int tourid) {
 		Connection con = DatabaseConfig.getConn();
 		String sql = "SELECT "
@@ -262,7 +262,7 @@ public class TourRecordManager {
 		return result;
 	}
 		
-	// GET TOUR RECORD BY USER
+	// GET TOUR RECORD BY USER (USER PROFILE HISTORY)
 	public List<TourRecord> getRecordByUser(int userid) {
 		Connection con = DatabaseConfig.getConn();
 		String sql = "SELECT "
@@ -304,4 +304,60 @@ public class TourRecordManager {
 		}
 		return result;
 	}
+	
+	// SHOW BEST AND LEAST SELLING CATEGORIES
+	public List<TourRecord> showBestCategories() {
+		Connection con = DatabaseConfig.getConn();
+		String sql = "SELECT "
+						+ "C.categoryid, "
+						+ "C.category, "
+						+ "sum(O.quantity) as total_purchases, "
+						+ "count(C.category) as total_orders "
+					+ "FROM "
+						+ "tour AS T, "
+						+ "category AS C, "
+						+ "tour_category AS TC, "
+						+ "order_history AS O "
+					+ "WHERE "
+						+ "T.tourid = TC.tourid AND "
+						+ "T.tourid = O.tourid AND "
+						+ "C.categoryid = TC.categoryid "
+					+ "GROUP BY "
+						+ "C.category "
+					+ "ORDER BY "
+						+ "total_purchases DESC";
+		
+		ResultSet rs = null; 
+		Statement stmt= null;
+		List<TourRecord> result = null;
+
+		try {
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(sql);
+			result = new ArrayList<>();
+
+			while (rs.next()) {
+				TourRecord tempRecord = new TourRecord();
+				tempRecord.setCategoryid(rs.getInt("categoryid"));
+				tempRecord.setCategory(rs.getString("category"));
+				tempRecord.setTotal_purchases(rs.getInt("total_purchases"));
+				tempRecord.setTotal_orders(rs.getInt("total_orders"));
+				result.add(tempRecord);
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+
+		} finally {
+		    try { if (rs != null) rs.close(); } catch (Exception e) {};
+		    try { if (stmt != null) stmt.close(); } catch (Exception e) {};
+		    try { if (con != null) con.close(); } catch (Exception e) {};
+		}
+		return result;
+	}
+
+	// SHOW TOUR RECORDS BY CATEGORY ASC
+	// SHOW TOUR RECORDS BY TOUR ASC
+	// SHOW TOUR RECORD BY INDIVIDUAL TOUR SAME AS USER WHO BOOK ... ? MAYBE
+	// COMBINE?
 }

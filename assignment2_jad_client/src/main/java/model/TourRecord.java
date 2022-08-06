@@ -6,7 +6,11 @@ public class TourRecord {
 	private int tourid;
 	private String tourname;
 	private int quantity;
+	private int total_orders;
+	private int total_purchases;
 	private String purchased_at;
+	private String category;
+	private int categoryid;
 
 	public TourRecord() {
 
@@ -64,6 +68,38 @@ public class TourRecord {
 
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+	public int getCategoryid() {
+		return categoryid;
+	}
+
+	public void setCategoryid(int categoryid) {
+		this.categoryid = categoryid;
+	}
+
+	public int getTotal_orders() {
+		return total_orders;
+	}
+
+	public void setTotal_orders(int total_orders) {
+		this.total_orders = total_orders;
+	}
+
+	public int getTotal_purchases() {
+		return total_purchases;
+	}
+
+	public void setTotal_purchases(int total_purchases) {
+		this.total_purchases = total_purchases;
 	}
 
 }

@@ -113,7 +113,7 @@ public class TourAdminSearchController extends HttpServlet {
 		}
 
 		request.setAttribute("mgmtTours", result);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("test.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("test");
 		dispatcher.forward(request, response);
 	}
 

@@ -65,10 +65,23 @@
 	
 	try{
 		for(TourRecord i : displaySalesTour){
-			out.println("Tour Name: " + i.getTourname() + "<br>");
-			out.println("User: " + i.getUsername() + "<br>");
-			out.println("Qty: " + i.getQuantity() + "<br>");
-			out.println("Date of Purchase: " + i.getPurchased_at() + "<br>");
+			if (i.getTourname() != null)
+				out.println("Tour Name: " + i.getTourname() + "<br>");
+			if (i.getUsername() != null)
+				out.println("User: " + i.getUsername() + "<br>");
+			if (i.getQuantity() > 0)
+				out.println("Qty: " + i.getQuantity() + "<br>");
+			if (i.getPurchased_at() != null)
+				out.println("Date of Purchase: " + i.getPurchased_at() + "<br>");
+			
+			if (i.getCategoryid() > 0)
+				out.println("Category ID: " + i.getCategoryid() + "<br>");
+			if (i.getCategory() != null)
+				out.println("Category: " + i.getCategory() + "<br>");
+			if (i.getTotal_purchases() > 0)
+				out.println("Total Purchases: " + i.getTotal_purchases() + "<br>");
+			if (i.getTotal_orders() > 0)
+				out.println("Total Orders: " + i.getTotal_orders() + "<br>");
 			out.println("<br>---------------<br>");
 		}
 	} catch (Exception ex){
@@ -179,6 +192,7 @@
  	<select name="salesfilter" placeholder="Choose one">
  	<option value="topOrders">Top 10 users by Orders</option>
  	<option value="topValue">Top 10 users by Value</option>
+ 	<option value="topCategory">Best and least selling categories</option>
  	</select><br>
  	<input type="submit">
  </form>
@@ -199,8 +213,6 @@
  <h2>User Tour History</h2>
  <h5>Tour history </h5>
  <form action="/assignment2_jad_client/TourRecordShowOneController" method="get">
- 	  <label>Date From:</label>
-	  <input type="date" name="dateFrom"> <br>
 	  <label>Get Tour History</label>
 	  <input type="submit">
  </form>
