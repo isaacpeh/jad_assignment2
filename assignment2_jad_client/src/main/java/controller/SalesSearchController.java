@@ -58,8 +58,11 @@ public class SalesSearchController extends HttpServlet {
 		try {
 			dateFrom = request.getParameter("dateFrom").trim() + " 00:00:00";
 			dateTo = request.getParameter("dateTo").trim() + " 23:59:59";
+			if (dateFrom == null || dateTo == null || dateFrom.equals("") || dateTo.equals("")) {
+				response.sendRedirect("/assignment2_jad_client/admin_sales.jsp?errCode=invalidData");
+				return;
+			}
 		} catch (Exception ex) {
-			// input error here
 		}
 		
 		try {
@@ -85,7 +88,7 @@ public class SalesSearchController extends HttpServlet {
 
 		}
 
-		RequestDispatcher dispatcher = request.getRequestDispatcher("test.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("admin_sales.jsp");
 		dispatcher.forward(request, response);
 	}
 
