@@ -95,17 +95,15 @@
 					<p>If all is good and wish to enroll, you can do so by clicking
 						the button below!</p>
 					<div class="row" style="justify-content:space-between">
-					<div class="col-6">
-						<button class="btn-info text-white u-center" style="width:120px;height:50px">Enroll</button>
-					</div>
+					
 						
-					<div class="col-6">
+					<div class="col-12">
 						<a href="CartAddController?tourid=<%=tourid %>">
 							<button class="btn-link" >Add to cart</button>
 						</a>
 					</div>
 					
-				</div>
+					</div>
 			</div>
 		</div>
 	</div>
