@@ -78,16 +78,16 @@ public class TourRecordAddController extends HttpServlet {
 
 			TourRecord newTour = new TourRecord(userid, tourid, quantity);
 			list.add(newTour);
-			int[] result = trm.addRecord(list);
-
-			if (result[0] != -1) {
-				response.sendRedirect(source + "?message=succesfullyBooked");
-				return;
-
-			} else {
-				response.sendRedirect(source + "?errCode=failedBooking");
-				return;
-			}
+//			int[] result = trm.addRecord(list);
+//
+//			if (result[0] != -1) {
+//				response.sendRedirect(source + "?message=succesfullyBooked");
+//				return;
+//
+//			} else {
+//				response.sendRedirect(source + "?errCode=failedBooking");
+//				return;
+//			}
 		}
 
 		if (cart == null || cart.size() == 0) {
@@ -125,16 +125,17 @@ public class TourRecordAddController extends HttpServlet {
 		/* --------------------------------------------
 		 * 3. Process request
 		 * -------------------------------------------- */
-		int[] result = trm.addRecord(list);
-		
-		if (result[0] != -1) {
-			response.sendRedirect("customer_history.jsp");
-			return;
-
-		} else {
-			response.sendRedirect(source + "?errCode=failedTransaction");
-			return;
-		}
+		// TODO: Check with Isaac about this error
+//		int[] result = trm.addRecord(list);
+//		
+//		if (result[0] != -1) {
+//			response.sendRedirect("customer_history.jsp");
+//			return;
+//
+//		} else {
+//			response.sendRedirect(source + "?errCode=failedTransaction");
+//			return;
+//		}
 	}
 
 }
